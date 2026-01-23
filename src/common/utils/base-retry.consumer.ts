@@ -7,10 +7,10 @@ export abstract class BaseRetryConsumer {
   protected readonly maxRetries = 3
   protected readonly baseDelay = 1000
 
-  protected async handleWithRetry(
+  protected async handleWithRetry<T>(
     context: RmqContext,
-    handler: () => Promise<void>,
-  ): Promise<void> {
+    handler: () => Promise<T>,
+  ): Promise<T | undefined> {
     const channel = context.getChannelRef()
     const originalMsg = context.getMessage()
     const retryCount = originalMsg.properties.headers?.['x-retry-count'] || 0
@@ -31,13 +31,14 @@ export abstract class BaseRetryConsumer {
       })
 
       channel.ack(originalMsg) // xóa message gốc khỏi queue chính
-      return
+      return undefined
     }
 
     try {
-      await handler()
+      const result = await handler()
       channel.ack(originalMsg)
       console.log('✅ Acked, Message processed successfully')
+      return result
     } catch (error) {
       // Exponential backoff: 1s, 2s, 4s
       const baseDelayForRetry = this.baseDelay * Math.pow(2, retryCount)
@@ -74,6 +75,7 @@ export abstract class BaseRetryConsumer {
       }, jitterDelay)
 
       channel.ack(originalMsg) // xóa message gốc vì đã publish message mới với retry count tăng lên rồi
+      return undefined
     }
   }
 }

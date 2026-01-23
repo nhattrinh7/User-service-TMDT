@@ -81,4 +81,11 @@ export class AddressRepository implements IAddressRepository {
   })
   return AddressMapper.toSingleDomainAddress(address)
 }
+
+  async findByIds(ids: string[]): Promise<Address[]> {
+    const addresses = await this.prisma.address.findMany({
+      where: { id: { in: ids } }
+    })
+    return AddressMapper.toDomain(addresses)
+  }
 }

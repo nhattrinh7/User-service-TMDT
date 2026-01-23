@@ -8,5 +8,6 @@ export interface IAddressRepository {
   deleteAddress(id: string): Promise<void>
   update(address: Address): Promise<Address>
   findDefaultByUserId(userId: string): Promise<Address | null>
+  findByIds(ids: string[]): Promise<Address[]>
 }
 export const ADDRESS_REPOSITORY = Symbol('IAddressRepository')

@@ -16,6 +16,11 @@ import { ChangePasswordHandler } from '~/application/commands/change-password/ch
 import { GetUsersPaginatedHandler } from '~/application/queries/get-users-paginated/get-users-paginated.query.handler'
 import { BanUserHandler } from '~/application/commands/ban-user/ban-user.command.handler'
 import { UnbanUserHandler } from '~/application/commands/unban-user/unban-user.command.handler'
+import { CreateRoleCategoryHandler } from '~/application/commands/create-role-category/create-role-category.command.handler'
+import { GetOwnerAndAddressHandler } from '~/application/queries/get-owner-and-address/get-owner-and-address.query.handler'
+import { GetTopLevelCategoryIdsHandler } from '~/application/queries/get-top-level-category-ids/get-top-level-category-ids.query.handler'
+import { GetOwnerEmailHandler } from '~/application/queries/get-owner-email/get-owner-email.query.handler'
+import { GetLeafCategoryIdsHandler } from '~/application/queries/get-leaf-category-ids/get-leaf-category-ids.query.handler'
 
 const CommandHandlers = [
   UpdateAvatarHandler,
@@ -26,14 +31,19 @@ const CommandHandlers = [
   SetDefaultAddressHandler,
   ChangePasswordHandler,
   BanUserHandler,
-  UnbanUserHandler
+  UnbanUserHandler,
+  CreateRoleCategoryHandler
 ]
 
 const QueryHandlers = [
   GetProfileHandler,
   GetAddressesHandler,
   GetDefaultAddressHandler,
-  GetUsersPaginatedHandler
+  GetUsersPaginatedHandler,
+  GetOwnerAndAddressHandler,
+  GetTopLevelCategoryIdsHandler,
+  GetOwnerEmailHandler,
+  GetLeafCategoryIdsHandler
 ]
 
 const EventHandlers = [

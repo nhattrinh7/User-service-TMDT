@@ -10,5 +10,6 @@ export interface IUserRepository {
   findByUsername(username: string): Promise<User | null>
   getUsersPaginated(page: number, limit: number, search?: string, status?: string): Promise<PaginatedResult<User>>
   updateStatus(userId: string, status: string): Promise<User>
+  findByIds(ids: string[]): Promise<User[]>
 }
 export const USER_REPOSITORY = Symbol('IUserRepository')

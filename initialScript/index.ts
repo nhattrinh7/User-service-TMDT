@@ -17,52 +17,54 @@ const main = async () => {
   const roles = await prisma.role.createMany({
     data: [
       {
-        id: uuidv4(),
+        // CHÚ Ý: ********* //
+        id: 'a1076e42-25f0-4e3f-916a-d1412ce63c2a', // vì muốn import sẵn lên db của production các bản ghi hiện tại đang có trong db local
+        // mà import như thế thì các giá trị như categoryId, roleId cần được giữ nguyên, nên sẽ import thằng giá trị uuid luôn thay vì uuidv4()
         name: RoleName.CUSTOMER,
         description: 'Role Khách hàng với các quyền hạn cơ bản',
       },
       {
-        id: uuidv4(),
+        id: '9c571637-1931-489a-b9a0-9a11cd4d6e17',
         name: RoleName.SELLER,
         description: 'Role Người bán có quyền bán hàng và quản lí shop của mình',
       },
       {
-        id: uuidv4(),
+        id: 'ed299a58-ba9f-451d-9b24-23573ed9f380',
         name: RoleName.SUPER_ADMIN,
         description: 'Super admin với toàn quyền quản trị hệ thống',
       },
       {
-        id: uuidv4(),
+        id: '902c94c2-e1ac-4bfe-ab40-d0d725141241',
         name: RoleName.CUSTOMER_ADMIN,
         description: 'Customer admin quản lí người dùng và giải quyết tranh chấp giữa người dùng và người bán',
       },
       {
-        id: uuidv4(),
+        id: '30ea1d43-04be-4843-826c-6210679ff084',
         name: RoleName.FASHION_ADMIN,
         description: 'Fashion admin quản lí các ngành hàng thời trang',
       },
       {
-        id: uuidv4(),
+        id: 'fb17af35-844e-434f-a16e-71b1cc7a9f17',
         name: RoleName.BEAUTY_HEALTH_ADMIN,
         description: 'Beauty & Health admin quản lí các ngành hàng làm đẹp, sức khỏe, mẹ và bé',
       },
       {
-        id: uuidv4(),
+        id: 'e2664000-3423-427f-b5e4-0576223931c7',
         name: RoleName.TECH_ADMIN,
         description: 'Tech admin quản lí các ngành hàng công nghệ',
       },
       {
-        id: uuidv4(),
+        id: 'f8516dd1-9996-43b0-b3b0-dbd719296121',
         name: RoleName.HOME_LIFESTYLE_ADMIN,
         description: 'Home & Lifestyle admin quản lí các ngành hàng nhà cửa, đời sống',
       },
       {
-        id: uuidv4(),
+        id: 'e262fb84-8312-41c0-980e-849293b6261d',
         name: RoleName.LEISURE_ADMIN,
         description: 'Leisure admin quản lí các ngành hàng thể thao, dã ngoại',
       },
       {
-        id: uuidv4(),
+        id: '4608ebfb-98e9-4019-a390-ae95ef7b3687',
         name: RoleName.FOOD_BEVERAGE_ADMIN,
         description: 'Food & Beverage admin quản lí các ngành hàng đồ ăn, đồ uống',
       },
