@@ -68,6 +68,16 @@ const main = async () => {
         name: RoleName.FOOD_BEVERAGE_ADMIN,
         description: 'Food & Beverage admin quản lí các ngành hàng đồ ăn, đồ uống',
       },
+      {
+        id: '4608ebfb-98e9-4019-a390-ae95ef7b3666',
+        name: RoleName.SHIPPER,
+        description: 'Shipper giao đơn hàng',
+      },
+      {
+        id: '4608ebfb-98e9-4019-a390-ae95ef7b3667',
+        name: RoleName.WAREHOUSE_SCANNER,
+        description: 'Warehouse scanner quét mã QR trên đơn hàng đến ở kho mình phụ trách',
+      },
     ],
   })
 
@@ -248,6 +258,80 @@ const main = async () => {
     },
   })
 
+  // Tạo tài khoản shipper mặc định
+  const shipperRole = await prisma.role.findFirstOrThrow({
+    where: {
+      name: RoleName.SHIPPER,
+    },
+  })
+  const shipperPassword = await hashPassword(process.env.SHIPPER_PASSWORD!)
+  const shipper = await prisma.user.create({
+    data: {
+      id: uuidv4(),
+      username: 'shipper',
+      email: process.env.SHIPPER_EMAIL!,
+      password: shipperPassword,
+      roleId: shipperRole.id,
+      fullName: 'Shipper',
+      phoneNumber: '0123456781',
+      gender: Gender.MALE,
+      dob: new Date(),
+      emailVerified: true,
+    },
+  })
+
+  // Tạo tài khoản warehouse scanner mặc định
+  const warehouseScannerRole = await prisma.role.findFirstOrThrow({
+    where: {
+      name: RoleName.WAREHOUSE_SCANNER,
+    },
+  })
+  const warehouseScannerPassword = await hashPassword(process.env.WAREHOUSE_SCANNER_PASSWORD!)
+  const warehouseScanner1 = await prisma.user.create({
+    data: {
+      id: uuidv4(),
+      username: 'warehousescanner1',
+      email: process.env.WAREHOUSE_SCANNER_1_EMAIL!,
+      password: warehouseScannerPassword,
+      roleId: warehouseScannerRole.id,
+      fullName: 'Warehouse Scanner 1',
+      phoneNumber: '0123456765',
+      gender: Gender.MALE,
+      dob: new Date(),
+      emailVerified: true,
+    },
+  })
+
+  const warehouseScanner2 = await prisma.user.create({
+    data: {
+      id: uuidv4(),
+      username: 'warehousescanner2',
+      email: process.env.WAREHOUSE_SCANNER_2_EMAIL!,
+      password: warehouseScannerPassword,
+      roleId: warehouseScannerRole.id,
+      fullName: 'Warehouse Scanner 2',
+      phoneNumber: '0123456756',
+      gender: Gender.MALE,
+      dob: new Date(),
+      emailVerified: true,
+    },
+  })
+
+  const warehouseScanner3 = await prisma.user.create({
+    data: {
+      id: uuidv4(),
+      username: 'warehousescanner3',
+      email: process.env.WAREHOUSE_SCANNER_3_EMAIL!,
+      password: warehouseScannerPassword,
+      roleId: warehouseScannerRole.id,
+      fullName: 'Warehouse Scanner 3',
+      phoneNumber: '0123456745',
+      gender: Gender.MALE,
+      dob: new Date(),
+      emailVerified: true,
+    },
+  })
+
   return {
     createdRoleCount: roles.count,
     superAdmin,
@@ -258,6 +342,10 @@ const main = async () => {
     homeLifestyleAdmin,
     leisureAdmin,
     foodBeverageAdmin,
+    shipper,
+    warehouseScanner1,
+    warehouseScanner2,
+    warehouseScanner3,
   }
 }
 
@@ -271,7 +359,11 @@ main()
     techAdmin, 
     homeLifestyleAdmin, 
     leisureAdmin, 
-    foodBeverageAdmin 
+    foodBeverageAdmin, 
+    shipper, 
+    warehouseScanner1,
+    warehouseScanner2,
+    warehouseScanner3,
   }) => {
     console.log(`Created ${createdRoleCount} roles`)
     console.log(`Created super admin user: ${superAdmin.email}`)
@@ -282,5 +374,9 @@ main()
     console.log(`Created home & lifestyle admin user: ${homeLifestyleAdmin.email}`)
     console.log(`Created leisure admin user: ${leisureAdmin.email}`)
     console.log(`Created food & beverage admin user: ${foodBeverageAdmin.email}`)
+    console.log(`Created shipper user: ${shipper.email}`)
+    console.log(`Created warehouse scanner user: ${warehouseScanner1.email}`)
+    console.log(`Created warehouse scanner user: ${warehouseScanner2.email}`)
+    console.log(`Created warehouse scanner user: ${warehouseScanner3.email}`)
   })
   .catch(console.error)
