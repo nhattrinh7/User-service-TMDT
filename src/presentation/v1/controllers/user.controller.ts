@@ -12,7 +12,6 @@ import {
   Body,
   Put,
   Post,
-  Header,
   Delete,
 } from '@nestjs/common'
 import { CommandBus, QueryBus } from '@nestjs/cqrs'
@@ -20,7 +19,7 @@ import { UpdateAvatarCommand } from '~/application/commands/update-avatar/update
 import { GetProfileQuery } from '~/application/queries/get-profile/get-profile.query'
 import type { Express } from 'express'
 import { FileInterceptor } from '@nestjs/platform-express'
-import type { ChangePasswordBodyDto, UpdateProfileBodyDto } from '~/presentation/dtos/user.dto'
+import type { ChangePasswordBodyDto, UpdateProfileBodyDto, CreatePassCodeBodyDto, ChangePassCodeBodyDto, ResetPassCodeBodyDto } from '~/presentation/dtos/user.dto'
 import { UpdateProfileCommand } from '~/application/commands/update-profile/update-profile.command'
 import { GetAddressesQuery } from '~/application/queries/get-addresses/get-addresses.query'
 import { AddAddressBodyDto, UpdateAddressBodyDto } from '~/presentation/dtos/address.dto'
@@ -29,7 +28,17 @@ import { DeleteAddressCommand } from '~/application/commands/delete-address/dele
 import { UpdateAddressCommand } from '~/application/commands/update-address/update-address.command'
 import { SetDefaultAddressCommand } from '~/application/commands/set-default-address/set-default-address.command'
 import { ChangePasswordCommand } from '~/application/commands/change-password/change-password.command'
+import { CreatePassCodeCommand } from '~/application/commands/create-pass-code/create-pass-code.command'
+import { ChangePassCodeCommand } from '~/application/commands/change-pass-code/change-pass-code.command'
+import { RequestPassCodeResetCommand } from '~/application/commands/request-pass-code-reset/request-pass-code-reset.command'
+import { ResetPassCodeCommand } from '~/application/commands/reset-pass-code/reset-pass-code.command'
+import { CheckPassCodeQuery } from '~/application/queries/check-pass-code/check-pass-code.query'
 import { GetDefaultAddressQuery } from '~/application/queries/get-default-address/get-default-address.command'
+import { CountCartItemsQuery } from '~/application/queries/count-cart-items/count-cart-items.query'
+import { GetCartQuery } from '~/application/queries/get-cart/get-cart.query'
+import { AddToCartBodyDto, DeleteCartItemsBodyDto } from '~/presentation/dtos/cart.dto'
+import { AddToCartCommand } from '~/application/commands/add-to-cart/add-to-cart.command'
+import { DeleteCartItemsCommand } from '~/application/commands/delete-cart-items/delete-cart-items.command'
 
 @Controller('v1/users')
 export class UserController {
@@ -37,6 +46,103 @@ export class UserController {
     private readonly commandBus: CommandBus,
     private readonly queryBus: QueryBus,
   ) {}
+
+  // ===== STATIC ROUTES (phải đặt TRƯỚC :id routes) =====
+
+  @Put('add-to-cart')
+  async addToCart(
+    @Body() body: AddToCartBodyDto,
+    @Headers('x-user-id') userId: string,
+  ): Promise<any> {
+    const result = await this.commandBus.execute(
+      new AddToCartCommand(userId, body.productVariantId, body.quantity)
+    )
+    
+    return { message: 'Add to cart successful', data: result }
+  }
+
+  @Patch('delete-cart-items')
+  async deleteCartItems(
+    @Body() body: DeleteCartItemsBodyDto,
+    @Headers('x-user-id') userId: string,
+  ): Promise<any> {
+    const result = await this.commandBus.execute(
+      new DeleteCartItemsCommand(userId, body.productVariantIds)
+    )
+    
+    return { message: 'Delete cart items successful', data: result }
+  }
+
+  @Put('address/:id')
+  async updateAddress(
+    @Param('id') id: string,
+    @Body() body: UpdateAddressBodyDto, 
+  ): Promise<any> {
+    await this.commandBus.execute(new UpdateAddressCommand(id, body))
+    return { message: 'Update address successful' }
+  }
+
+  @Delete('address/:id')
+  async deleteAddress(
+    @Param('id') id: string
+  ): Promise<any> {
+    await this.commandBus.execute(new DeleteAddressCommand(id))
+    return { message: 'Delete address successful' }
+  }
+
+  @Patch('address/:id/set-default')
+  async setDefaultAddress(
+    @Param('id') id: string
+  ): Promise<any> {
+    await this.commandBus.execute(new SetDefaultAddressCommand(id))
+    return { message: 'Set default address successful' }
+  }
+
+  // ===== PASSCODE ENDPOINTS =====
+
+  @Get('check-pass-code')
+  async checkPassCode(
+    @Headers('x-user-id') userId: string,
+  ): Promise<any> {
+    return this.queryBus.execute(new CheckPassCodeQuery(userId))
+  }
+
+  @Post('pass-code')
+  async createPassCode(
+    @Body() body: CreatePassCodeBodyDto,
+    @Headers('x-user-id') userId: string,
+  ): Promise<any> {
+    await this.commandBus.execute(new CreatePassCodeCommand(userId, body))
+    return { message: 'Create passcode successful' }
+  }
+
+  @Put('change-pass-code')
+  async changePassCode(
+    @Body() body: ChangePassCodeBodyDto,
+    @Headers('x-user-id') userId: string,
+  ): Promise<any> {
+    await this.commandBus.execute(new ChangePassCodeCommand(userId, body))
+    return { message: 'Change passcode successful' }
+  }
+
+  @Post('request-pass-code-reset')
+  async requestPassCodeReset(
+    @Headers('x-user-id') userId: string,
+  ): Promise<any> {
+    await this.commandBus.execute(new RequestPassCodeResetCommand(userId))
+    return { message: 'OTP đã được gửi đến email của bạn' }
+  }
+
+  @Put('reset-pass-code')
+  async resetPassCode(
+    @Body() body: ResetPassCodeBodyDto,
+    @Headers('x-user-id') userId: string,
+  ): Promise<any> {
+    await this.commandBus.execute(new ResetPassCodeCommand(userId, body))
+    return { message: 'Reset passcode successful' }
+  }
+
+  // ===== DYNAMIC :id ROUTES (đặt SAU các static routes) =====
 
   @Get(':id')
   async getProfile(@Param('id') id: string): Promise<any> {
@@ -100,38 +206,32 @@ export class UserController {
     return { message: 'Add address successful', data: address }
   }
 
-  @Put('address/:id')
-  async updateAddress(
-    @Param('id') id: string,
-    @Body() body: UpdateAddressBodyDto, 
-  ): Promise<any> {
-    await this.commandBus.execute(new UpdateAddressCommand(id, body))
-    return { message: 'Update address successful' }
-  }
-
-  @Delete('address/:id')
-  async deleteAddress(
-    @Param('id') id: string
-  ): Promise<any> {
-    await this.commandBus.execute(new DeleteAddressCommand(id))
-    return { message: 'Delete address successful' }
-  }
-
-  @Patch('address/:id/set-default')
-  async setDefaultAddress(
-    @Param('id') id: string
-  ): Promise<any> {
-    await this.commandBus.execute(new SetDefaultAddressCommand(id))
-    return { message: 'Set default address successful' }
-  }
-
   @Put(':id/change-password')
   async changePassword(
     @Param('id') id: string,
-    @Body() body: ChangePasswordBodyDto,
+    @Body() body: ChangePasswordBodyDto, 
     @Headers('x-user-id') userId: string,
   ): Promise<any> {
     await this.commandBus.execute(new ChangePasswordCommand(userId, body))
     return { message: 'Change password successful' }
   }
+
+  @Get(':id/count-cart-items')
+  async countCartItems(
+    @Param('id') userId: string
+  ): Promise<any> {
+    const result = await this.queryBus.execute(new CountCartItemsQuery(userId))
+    
+    return { message: 'Count cart items successful', data: result }
+  }
+
+  @Get(':id/cart')
+  async getCart(
+    @Param('id') userId: string
+  ): Promise<any> {
+    const result = await this.queryBus.execute(new GetCartQuery(userId))
+    
+    return { message: 'Get cart successful', data: result }
+  }
+  
 }

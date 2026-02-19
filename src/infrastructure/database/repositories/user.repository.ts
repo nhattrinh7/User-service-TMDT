@@ -5,6 +5,7 @@ import { UserMapper } from '~/infrastructure/database/mappers/user.mapper'
 import { IUserRepository } from '~/domain/repositories/user.repository.interface'
 import { UpdateProfileBodyDto } from '~/presentation/dtos/user.dto'
 import { PaginatedResult } from '~/domain/interfaces/user.interface'
+import { CartItem } from '~/domain/entities/cart-item.entity'
 
 @Injectable()
 export class UserRepository implements IUserRepository {
@@ -119,4 +120,58 @@ export class UserRepository implements IUserRepository {
     return users.map((user) => UserMapper.toDomain(user))
   }
 
+  async countCartItems(userId: string): Promise<number> {
+    const count = await this.prisma.cartItem.count({
+      where: { userId }
+    })
+    return count
+  }
+
+  async getCartItems(userId: string): Promise<any[]> {
+    const cartItems = await this.prisma.cartItem.findMany({
+      where: { userId },
+      orderBy: { createdAt: 'desc' }
+    })
+    return cartItems
+  }
+
+  async findCartItemByUserAndVariant(userId: string, productVariantId: string): Promise<any> {
+    const cartItem = await this.prisma.cartItem.findFirst({
+      where: { 
+        userId,
+        productVariantId 
+      }
+    })
+    return cartItem
+  }
+
+  async createCartItem(cartItem: CartItem): Promise<CartItem> {
+    await this.prisma.cartItem.create({
+      data: {
+        id: cartItem.id,
+        userId: cartItem.userId,
+        productId: cartItem.productId,
+        productVariantId: cartItem.productVariantId,
+        shopId: cartItem.shopId,
+        productName: cartItem.productName,
+        productImage: cartItem.productImage,
+        variantSku: cartItem.variantSku,
+        price: cartItem.price,
+        quantity: cartItem.quantity,
+        createdAt: cartItem.createdAt,
+        updatedAt: cartItem.updatedAt
+      }
+    })
+    return cartItem
+  }
+
+  async deleteCartItems(userId: string, productVariantIds: string[]): Promise<number> {
+    const result = await this.prisma.cartItem.deleteMany({
+      where: {
+        userId,
+        productVariantId: { in: productVariantIds }
+      }
+    })
+    return result.count
+  }
 }

@@ -46,4 +46,56 @@ export class User extends AggregateRoot {
     const hashedPassword = await hashPassword(newPassword)
     this.password = hashedPassword
   }
+
+  // ===== PASSCODE METHODS =====
+
+  hasPassCode(): boolean {
+    return this.passCode !== null
+  }
+
+  async createPassCode(code: string): Promise<void> {
+    if (this.passCode) {
+      throw new Error('Passcode đã tồn tại. Vui lòng sử dụng chức năng đổi passcode.')
+    }
+    this.passCode = await hashPassword(code)
+  }
+
+  async verifyPassCode(plainCode: string): Promise<boolean> {
+    if (!this.passCode) return false
+    return await comparePassword(plainCode, this.passCode)
+  }
+
+  async changePassCode(oldCode: string, newCode: string): Promise<void> {
+    if (!this.passCode) {
+      throw new Error('Chưa có passcode. Vui lòng tạo passcode trước.')
+    }
+    const isValid = await comparePassword(oldCode, this.passCode)
+    if (!isValid) {
+      throw new Error('Passcode hiện tại không đúng')
+    }
+    this.passCode = await hashPassword(newCode)
+  }
+
+  requestPassCodeReset(): OTP {
+    if (!this.passCode) {
+      throw new Error('Chưa có passcode. Không thể reset.')
+    }
+    const otp = OTP.create(3) // 3 phút
+    this.passCodeResetOtp = otp
+    return otp
+  }
+
+  async resetPassCode(otpCode: string, newCode: string): Promise<void> {
+    if (!this.passCodeResetOtp) {
+      throw new Error('Chưa yêu cầu reset passcode')
+    }
+    if (!this.passCodeResetOtp.isValid(otpCode)) {
+      if (this.passCodeResetOtp.isExpired()) {
+        throw new Error('OTP đã hết hạn. Vui lòng yêu cầu gửi lại OTP mới.')
+      }
+      throw new Error('OTP không đúng')
+    }
+    this.passCode = await hashPassword(newCode)
+    this.passCodeResetOtp = null // Xóa OTP sau khi reset thành công
+  }
 }

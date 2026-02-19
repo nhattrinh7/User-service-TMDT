@@ -6,6 +6,7 @@ import { RabbitMQPublisher } from '~/infrastructure/messaging/publishers/rabbitm
 import { GetOwnerAndAddressConsumer } from '~/infrastructure/messaging/consumers/get-owner-and-address.consumer'
 import { GetOwnerEmailConsumer } from '~/infrastructure/messaging/consumers/get-owner-email.consumer'
 import { GetLeafCategoryIdsConsumer } from '~/infrastructure/messaging/consumers/get-leaf-category-ids.consumer'
+import { GetUsersInfoConsumer } from '~/infrastructure/messaging/consumers/get-users-info.consumer'
 
 @Module({
   imports: [
@@ -20,9 +21,27 @@ import { GetLeafCategoryIdsConsumer } from '~/infrastructure/messaging/consumers
           persistent: true,
         },
       },
+      {
+        name: 'SHOP_CLIENT',
+        transport: Transport.RMQ,
+        options: {
+          urls: ['amqp://admin:admin123@localhost:5672'],
+          queue: 'shop_queue',
+          persistent: true,
+        },
+      },
+      {
+        name: 'CATALOG_CLIENT',
+        transport: Transport.RMQ,
+        options: {
+          urls: ['amqp://admin:admin123@localhost:5672'],
+          queue: 'catalog_queue',
+          persistent: true,
+        },
+      },
     ]),
   ],
-  controllers: [GetOwnerAndAddressConsumer, GetOwnerEmailConsumer, GetLeafCategoryIdsConsumer],
+  controllers: [GetOwnerAndAddressConsumer, GetOwnerEmailConsumer, GetLeafCategoryIdsConsumer, GetUsersInfoConsumer],
   providers: [
     {
       provide: MESSAGE_PUBLISHER,

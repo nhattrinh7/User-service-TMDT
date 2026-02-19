@@ -1,6 +1,7 @@
 import { User } from '~/domain/entities/user.entity'
 import { UpdateProfileBodyDto } from '~/presentation/dtos/user.dto'
 import { PaginatedResult } from '~/domain/interfaces/user.interface'
+import { CartItem } from '~/domain/entities/cart-item.entity'
 
 export interface IUserRepository {
   findByEmail(email: string): Promise<User | null>
@@ -11,5 +12,10 @@ export interface IUserRepository {
   getUsersPaginated(page: number, limit: number, search?: string, status?: string): Promise<PaginatedResult<User>>
   updateStatus(userId: string, status: string): Promise<User>
   findByIds(ids: string[]): Promise<User[]>
+  countCartItems(userId: string): Promise<number>
+  getCartItems(userId: string): Promise<any[]>
+  findCartItemByUserAndVariant(userId: string, productVariantId: string): Promise<any>
+  createCartItem(cartItem: CartItem): Promise<CartItem>
+  deleteCartItems(userId: string, productVariantIds: string[]): Promise<number>
 }
 export const USER_REPOSITORY = Symbol('IUserRepository')

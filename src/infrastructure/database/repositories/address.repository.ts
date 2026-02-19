@@ -55,8 +55,9 @@ export class AddressRepository implements IAddressRepository {
     })
   }
 
-  async update(address: Address): Promise<Address> {
-    const prismaAddress = await this.prisma.address.update({
+  async update(address: Address, tx?: any): Promise<Address> {
+    const client = tx ?? this.prisma
+    const prismaAddress = await client.address.update({
       where: { id: address.id },
       data: {
         recipientName: address.recipientName,

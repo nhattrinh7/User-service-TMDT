@@ -18,20 +18,20 @@ model User {
   passCode               String?
   fullName               String    @map("full_name")
   phoneNumber            String    @unique @map("phone_number")
-  dob                    DateTime  @db.Timestamptz(3)
+  dob                    DateTime  @db.Timestamptz
   gender                 Gender
   avatar                 String?   @db.Text
   status                 Status    @default(ACTIVE)
   emailVerifyOtp         String?   @map("email_verify_otp") @db.VarChar()
-  emailVerifyOtpExpire   DateTime? @map("email_verify_otp_expire") @db.Timestamptz(3)
+  emailVerifyOtpExpire   DateTime? @map("email_verify_otp_expire") @db.Timestamptz
   emailVerified          Boolean   @default(false) @map("email_verified")
   passwordResetOtp       String?   @map("password_reset_otp") @db.VarChar()
-  passwordResetOtpExpire DateTime? @map("password_reset_otp_expire") @db.Timestamptz(3)
+  passwordResetOtpExpire DateTime? @map("password_reset_otp_expire") @db.Timestamptz
   passCodeResetOtp       String?   @map("pass_code_reset_otp") @db.VarChar()
-  passCodeResetOtpExpire DateTime? @map("pass_code_reset_otp_expire") @db.Timestamptz(3)
+  passCodeResetOtpExpire DateTime? @map("pass_code_reset_otp_expire") @db.Timestamptz
   require2FA             Boolean   @default(false) @map("require_2fa")
-  createdAt              DateTime  @default(now()) @map("created_at") @db.Timestamptz(3)
-  updatedAt              DateTime  @updatedAt @map("updated_at") @db.Timestamptz(3)
+  createdAt              DateTime  @default(now()) @map("created_at") @db.Timestamptz
+  updatedAt              DateTime  @updatedAt @map("updated_at") @db.Timestamptz
 
   role          Role           @relation(fields: [roleId], references: [id])
   wallet        Wallet?        
@@ -57,8 +57,8 @@ model Wallet {
   id        String   @id @db.Uuid
   userId    String   @unique @map("user_id") @db.Uuid
   balance   Decimal  @default(0) @db.Decimal(15, 2)
-  createdAt DateTime @default(now()) @map("created_at") @db.Timestamptz(3)
-  updatedAt DateTime @updatedAt @map("updated_at") @db.Timestamptz(3)
+  createdAt DateTime @default(now()) @map("created_at") @db.Timestamptz
+  updatedAt DateTime @updatedAt @map("updated_at") @db.Timestamptz
 
   user User @relation(fields: [userId], references: [id])
 
@@ -74,29 +74,33 @@ model Address {
   ward          String
   detail        String
   isDefault     Boolean  @default(false) @map("is_default")
-  createdAt     DateTime @default(now()) @map("created_at") @db.Timestamptz(3)
-  updatedAt     DateTime @updatedAt @map("updated_at") @db.Timestamptz(3)
+  createdAt     DateTime @default(now()) @map("created_at") @db.Timestamptz
+  updatedAt     DateTime @updatedAt @map("updated_at") @db.Timestamptz
 
   user User @relation(fields: [userId], references: [id])
 
   @@map("addresses")
 }
 
+// Nếu có thêm categoryId thì tốt, vì trong api getEligibleSzoneVouchers cần categoryId cấp 1 để tìm ra categoryId cấp 1
+// có categoryId cấp 1 sẽ check được item có thuộc danh mục được áp dụng Voucher sàn dạng ngành hàng không.
 model CartItem {
   id               String   @id @db.Uuid
   userId           String   @map("user_id") @db.Uuid
   productId        String   @map("product_id") @db.Uuid
   productVariantId String?  @map("product_variant_id") @db.Uuid
+  shopId           String   @map("shop_id") @db.Uuid
   productName      String   @map("product_name")
   productImage     String?  @map("product_image") @db.Text
   variantSku       String?  @map("variant_sku")
   price            Int
   quantity         Int
-  createdAt        DateTime @default(now()) @map("created_at") @db.Timestamptz(3)
-  updatedAt        DateTime @updatedAt @map("updated_at") @db.Timestamptz(3)
+  createdAt        DateTime @default(now()) @map("created_at") @db.Timestamptz
+  updatedAt        DateTime @updatedAt @map("updated_at") @db.Timestamptz
 
   user User @relation(fields: [userId], references: [id])
 
+  @@unique([userId, productVariantId]) // khi user addtocart, nếu cart có item đó r thì chỉ cộng số lượng, ko dc tạo bản ghi mới
   @@map("cart_items")
 }
 
@@ -105,8 +109,8 @@ model Role {
   id          String   @id @db.Uuid
   name        String   @unique
   description String?  @db.Text
-  createdAt   DateTime @default(now()) @map("created_at") @db.Timestamptz(3)
-  updatedAt   DateTime @updatedAt @map("updated_at") @db.Timestamptz(3)
+  createdAt   DateTime @default(now()) @map("created_at") @db.Timestamptz
+  updatedAt   DateTime @updatedAt @map("updated_at") @db.Timestamptz
 
   users         User[]
   roleCategories RoleCategory[]
@@ -137,8 +141,8 @@ model Permission {
   path        String
   module      String
   isPublic    Boolean?   @default(false) @map("is_public")
-  createdAt   DateTime   @default(now()) @map("created_at") @db.Timestamptz(3)
-  updatedAt   DateTime   @updatedAt @map("updated_at") @db.Timestamptz(3)
+  createdAt   DateTime   @default(now()) @map("created_at") @db.Timestamptz
+  updatedAt   DateTime   @updatedAt @map("updated_at") @db.Timestamptz
 
   roles Role[]
 
@@ -161,7 +165,7 @@ model RefreshToken {
   userAgent     String   @map("user_agent")
   iat           DateTime
   exp           DateTime
-  createdAt     DateTime @default(now()) @map("created_at") @db.Timestamptz(3)
+  createdAt     DateTime @default(now()) @map("created_at") @db.Timestamptz
 
   user User @relation(fields: [userId], references: [id])
 
@@ -172,7 +176,7 @@ model TwoFA {
   id        String   @id @db.Uuid
   userId    String   @unique @map("user_id") @db.Uuid
   value     String
-  createdAt DateTime @default(now()) @map("created_at") @db.Timestamptz(3)
+  createdAt DateTime @default(now()) @map("created_at") @db.Timestamptz
 
   user User @relation(fields: [userId], references: [id])
 

@@ -6,7 +6,7 @@ export interface IAddressRepository {
   addAddress(address: Address): Promise<Address | null>
   findById(id: string): Promise<Address | null>
   deleteAddress(id: string): Promise<void>
-  update(address: Address): Promise<Address>
+  update(address: Address, tx?: any): Promise<Address>
   findDefaultByUserId(userId: string): Promise<Address | null>
   findByIds(ids: string[]): Promise<Address[]>
 }

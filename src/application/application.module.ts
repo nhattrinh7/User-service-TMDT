@@ -21,6 +21,16 @@ import { GetOwnerAndAddressHandler } from '~/application/queries/get-owner-and-a
 import { GetTopLevelCategoryIdsHandler } from '~/application/queries/get-top-level-category-ids/get-top-level-category-ids.query.handler'
 import { GetOwnerEmailHandler } from '~/application/queries/get-owner-email/get-owner-email.query.handler'
 import { GetLeafCategoryIdsHandler } from '~/application/queries/get-leaf-category-ids/get-leaf-category-ids.query.handler'
+import { GetUsersInfoHandler } from '~/application/queries/get-users-info/get-users-info.query.handler'
+import { CountCartItemsHandler } from '~/application/queries/count-cart-items/count-cart-items.query.handler'
+import { GetCartHandler } from '~/application/queries/get-cart/get-cart.query.handler'
+import { AddToCartHandler } from '~/application/commands/add-to-cart/add-to-cart.command.handler'
+import { DeleteCartItemsHandler } from '~/application/commands/delete-cart-items/delete-cart-items.command.handler'
+import { CreatePassCodeHandler } from '~/application/commands/create-pass-code/create-pass-code.command.handler'
+import { ChangePassCodeHandler } from '~/application/commands/change-pass-code/change-pass-code.command.handler'
+import { RequestPassCodeResetHandler } from '~/application/commands/request-pass-code-reset/request-pass-code-reset.command.handler'
+import { ResetPassCodeHandler } from '~/application/commands/reset-pass-code/reset-pass-code.command.handler'
+import { CheckPassCodeHandler } from '~/application/queries/check-pass-code/check-pass-code.query.handler'
 
 const CommandHandlers = [
   UpdateAvatarHandler,
@@ -32,7 +42,13 @@ const CommandHandlers = [
   ChangePasswordHandler,
   BanUserHandler,
   UnbanUserHandler,
-  CreateRoleCategoryHandler
+  CreateRoleCategoryHandler,
+  AddToCartHandler,
+  DeleteCartItemsHandler,
+  CreatePassCodeHandler,
+  ChangePassCodeHandler,
+  RequestPassCodeResetHandler,
+  ResetPassCodeHandler
 ]
 
 const QueryHandlers = [
@@ -43,7 +59,11 @@ const QueryHandlers = [
   GetOwnerAndAddressHandler,
   GetTopLevelCategoryIdsHandler,
   GetOwnerEmailHandler,
-  GetLeafCategoryIdsHandler
+  GetLeafCategoryIdsHandler,
+  GetUsersInfoHandler,
+  CountCartItemsHandler,
+  GetCartHandler,
+  CheckPassCodeHandler,
 ]
 
 const EventHandlers = [
