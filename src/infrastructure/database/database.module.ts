@@ -4,10 +4,12 @@ import { USER_REPOSITORY } from '~/domain/repositories/user.repository.interface
 import { REFRESH_TOKEN_REPOSITORY } from '~/domain/repositories/refresh-token.repository.interface'
 import { ADDRESS_REPOSITORY } from '~/domain/repositories/address.repository.interface'
 import { ROLE_CATEGORY_REPOSITORY } from '~/domain/repositories/role-category.repository.interface'
+import { WALLET_REPOSITORY } from '~/domain/repositories/wallet.repository.interface'
 import { UserRepository } from '~/infrastructure/database/repositories/user.repository'
 import { RefreshTokenRepository } from '~/infrastructure/database/repositories/refresh-token.repository'
 import { AddressRepository } from '~/infrastructure/database/repositories/address.repository'
 import { RoleCategoryRepository } from '~/infrastructure/database/repositories/role-category.repository'
+import { WalletRepository } from '~/infrastructure/database/repositories/wallet.repository'
 import { CqrsModule } from '@nestjs/cqrs'
 
 @Module({
@@ -30,12 +32,19 @@ import { CqrsModule } from '@nestjs/cqrs'
       provide: ROLE_CATEGORY_REPOSITORY,
       useClass: RoleCategoryRepository,
     },
+    {
+      provide: WALLET_REPOSITORY,
+      useClass: WalletRepository,
+    },
   ],
   exports: [
+    PrismaService,
     USER_REPOSITORY, 
     REFRESH_TOKEN_REPOSITORY,
     ADDRESS_REPOSITORY,
-    ROLE_CATEGORY_REPOSITORY
+    ROLE_CATEGORY_REPOSITORY,
+    WALLET_REPOSITORY,
   ],
 })
 export class DatabaseModule {}
+

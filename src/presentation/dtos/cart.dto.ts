@@ -27,3 +27,9 @@ export const DeleteCartItemsBodySchema = z.object({
   productVariantIds: z.array(z.uuid()),
 })
 export class DeleteCartItemsBodyDto extends createZodDto(DeleteCartItemsBodySchema) {}
+
+export const UpdateCartQuantityBodySchema = z.object({
+  productVariantId: z.uuid(),
+  quantity: z.number().int().positive(),
+})
+export class UpdateCartQuantityBodyDto extends createZodDto(UpdateCartQuantityBodySchema) {}

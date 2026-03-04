@@ -17,9 +17,8 @@ export class GetUsersInfoConsumer extends BaseRetryConsumer {
     @Payload() data: { userIds: string[] },
     @Ctx() context: RmqContext,
   ) {
-    console.log('Event get.users_info received:', data)
-
     const result = await this.handleWithRetry(context, async () => {
+      this.logger.log(`Event get.users_info received, count=${data.userIds.length}`)
       return await this.queryBus.execute(new GetUsersInfoQuery(data.userIds))
     })
 

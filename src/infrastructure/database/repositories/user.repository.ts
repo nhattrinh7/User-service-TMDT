@@ -165,6 +165,19 @@ export class UserRepository implements IUserRepository {
     return cartItem
   }
 
+  async updateCartItemQuantity(userId: string, productVariantId: string, quantity: number): Promise<void> {
+    await this.prisma.cartItem.updateMany({
+      where: {
+        userId,
+        productVariantId
+      },
+      data: {
+        quantity,
+        updatedAt: new Date()
+      }
+    })
+  }
+
   async deleteCartItems(userId: string, productVariantIds: string[]): Promise<number> {
     const result = await this.prisma.cartItem.deleteMany({
       where: {

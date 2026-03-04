@@ -7,7 +7,7 @@ import { CloudinaryService } from '~/common/services/cloudinary.service'
 import { GetProfileHandler } from '~/application/queries/get-profile/get-profile.query.handler'
 import { UpdateProfileHandler } from '~/application/commands/update-profile/update-profile.command.handler'
 import { GetAddressesHandler } from '~/application/queries/get-addresses/get-addresses.query.handler'
-import { GetDefaultAddressHandler } from '~/application/queries//get-default-address/get-default-address.command.handler'
+import { GetDefaultAddressHandler } from '~/application/queries/get-default-address/get-default-address.command.handler'
 import { AddAddressHandler } from '~/application/commands/add-address/add-address.command.handler'
 import { DeleteAddressHandler } from '~/application/commands/delete-address/delete-address.command.handler'
 import { UpdateAddressHandler } from '~/application/commands/update-address/update-address.command.handler'
@@ -26,11 +26,16 @@ import { CountCartItemsHandler } from '~/application/queries/count-cart-items/co
 import { GetCartHandler } from '~/application/queries/get-cart/get-cart.query.handler'
 import { AddToCartHandler } from '~/application/commands/add-to-cart/add-to-cart.command.handler'
 import { DeleteCartItemsHandler } from '~/application/commands/delete-cart-items/delete-cart-items.command.handler'
+import { UpdateCartQuantityHandler } from '~/application/commands/update-cart-quantity/update-cart-quantity.command.handler'
 import { CreatePassCodeHandler } from '~/application/commands/create-pass-code/create-pass-code.command.handler'
 import { ChangePassCodeHandler } from '~/application/commands/change-pass-code/change-pass-code.command.handler'
 import { RequestPassCodeResetHandler } from '~/application/commands/request-pass-code-reset/request-pass-code-reset.command.handler'
 import { ResetPassCodeHandler } from '~/application/commands/reset-pass-code/reset-pass-code.command.handler'
 import { CheckPassCodeHandler } from '~/application/queries/check-pass-code/check-pass-code.query.handler'
+import { SagaGetAddressHandler } from '~/application/commands/saga-get-address/saga-get-address.command.handler'
+import { SagaRemoveCartItemsHandler } from '~/application/commands/saga-remove-cart-items/saga-remove-cart-items.command.handler'
+import { SagaVerifyPasscodeAndDeductHandler } from '~/application/commands/saga-verify-passcode-and-deduct/saga-verify-passcode-and-deduct.command.handler'
+import { SagaRefundWalletHandler } from '~/application/commands/saga-refund-wallet/saga-refund-wallet.command.handler'
 
 const CommandHandlers = [
   UpdateAvatarHandler,
@@ -45,10 +50,15 @@ const CommandHandlers = [
   CreateRoleCategoryHandler,
   AddToCartHandler,
   DeleteCartItemsHandler,
+  UpdateCartQuantityHandler,
   CreatePassCodeHandler,
   ChangePassCodeHandler,
   RequestPassCodeResetHandler,
-  ResetPassCodeHandler
+  ResetPassCodeHandler,
+  SagaGetAddressHandler,
+  SagaRemoveCartItemsHandler,
+  SagaVerifyPasscodeAndDeductHandler,
+  SagaRefundWalletHandler,
 ]
 
 const QueryHandlers = [

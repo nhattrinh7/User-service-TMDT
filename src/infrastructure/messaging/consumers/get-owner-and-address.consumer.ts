@@ -17,9 +17,8 @@ export class GetOwnerAndAddressConsumer extends BaseRetryConsumer {
     @Payload() data: GetOwnerAndAddressPayload[],
     @Ctx() context: RmqContext,
   ) {
-    console.log('Event get.owner_and_address received:', data)
-
     const result = await this.handleWithRetry(context, async () => {
+      this.logger.log(`Event get.owner_and_address received, count=${data.length}`)
       return await this.queryBus.execute(new GetOwnerAndAddressQuery(data))
     })
 

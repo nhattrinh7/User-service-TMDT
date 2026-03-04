@@ -55,11 +55,15 @@ export class AddToCartHandler implements ICommandHandler<AddToCartCommand, AddTo
     // Tìm CartItem theo userId và productVariantId
     const existingCartItem = await this.userRepository.findCartItemByUserAndVariant(userId, productVariantId)
 
-    // Nếu đã có item trong giỏ hàng
+    // Nếu đã có item trong giỏ hàng → cập nhật quantity trong DB
     if (existingCartItem) {
+      const newQuantity = existingCartItem.quantity + quantity
+
+      await this.userRepository.updateCartItemQuantity(userId, productVariantId, newQuantity)
+
       return {
         productVariantId,
-        quantity: existingCartItem.quantity + quantity
+        quantity: newQuantity
       }
     }
 

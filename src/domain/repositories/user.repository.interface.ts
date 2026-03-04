@@ -16,6 +16,7 @@ export interface IUserRepository {
   getCartItems(userId: string): Promise<any[]>
   findCartItemByUserAndVariant(userId: string, productVariantId: string): Promise<any>
   createCartItem(cartItem: CartItem): Promise<CartItem>
+  updateCartItemQuantity(userId: string, productVariantId: string, quantity: number): Promise<void>
   deleteCartItems(userId: string, productVariantIds: string[]): Promise<number>
 }
 export const USER_REPOSITORY = Symbol('IUserRepository')

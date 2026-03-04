@@ -9,5 +9,8 @@ export interface IAddressRepository {
   update(address: Address, tx?: any): Promise<Address>
   findDefaultByUserId(userId: string): Promise<Address | null>
   findByIds(ids: string[]): Promise<Address[]>
+
+  // Saga methods
+  findByUserIdAndAddressId(userId: string, addressId: string): Promise<Address | null>
 }
 export const ADDRESS_REPOSITORY = Symbol('IAddressRepository')

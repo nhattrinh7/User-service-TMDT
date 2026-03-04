@@ -17,9 +17,8 @@ export class GetLeafCategoryIdsConsumer extends BaseRetryConsumer {
     @Payload() roleId: string,
     @Ctx() context: RmqContext,
   ) {
-    console.log('Event get.leaf_categoryIds received:', roleId)
-
     const result = await this.handleWithRetry(context, async () => {
+      this.logger.log(`Event get.leaf_categoryIds received, roleId=${roleId}`)
       return await this.queryBus.execute(new GetLeafCategoryIdsQuery(roleId))
     })
 

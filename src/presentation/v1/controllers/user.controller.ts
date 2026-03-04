@@ -36,9 +36,10 @@ import { CheckPassCodeQuery } from '~/application/queries/check-pass-code/check-
 import { GetDefaultAddressQuery } from '~/application/queries/get-default-address/get-default-address.command'
 import { CountCartItemsQuery } from '~/application/queries/count-cart-items/count-cart-items.query'
 import { GetCartQuery } from '~/application/queries/get-cart/get-cart.query'
-import { AddToCartBodyDto, DeleteCartItemsBodyDto } from '~/presentation/dtos/cart.dto'
+import { AddToCartBodyDto, DeleteCartItemsBodyDto, UpdateCartQuantityBodyDto } from '~/presentation/dtos/cart.dto'
 import { AddToCartCommand } from '~/application/commands/add-to-cart/add-to-cart.command'
 import { DeleteCartItemsCommand } from '~/application/commands/delete-cart-items/delete-cart-items.command'
+import { UpdateCartQuantityCommand } from '~/application/commands/update-cart-quantity/update-cart-quantity.command'
 
 @Controller('v1/users')
 export class UserController {
@@ -71,6 +72,18 @@ export class UserController {
     )
     
     return { message: 'Delete cart items successful', data: result }
+  }
+
+  @Put('update-cart-quantity')
+  async updateCartQuantity(
+    @Body() body: UpdateCartQuantityBodyDto,
+    @Headers('x-user-id') userId: string,
+  ): Promise<any> {
+    const result = await this.commandBus.execute(
+      new UpdateCartQuantityCommand(userId, body.productVariantId, body.quantity)
+    )
+    
+    return { message: 'Update cart quantity successful', data: result }
   }
 
   @Put('address/:id')

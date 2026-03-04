@@ -21,10 +21,8 @@ export class GetOwnerEmailConsumer extends BaseRetryConsumer {
     @Payload() data: GetOwnerEmailPayload,
     @Ctx() context: RmqContext,
   ) {
-    // eslint-disable-next-line no-console
-    console.log('Event get.owner-email received:', data)
-
     const result = await this.handleWithRetry(context, async () => {
+      this.logger.log(`Event get.owner-email received, ownerId=${data.ownerId}`)
       return await this.queryBus.execute(new GetOwnerEmailQuery(data.ownerId))
     })
 

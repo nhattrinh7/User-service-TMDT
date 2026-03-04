@@ -7,6 +7,7 @@ import { GetOwnerAndAddressConsumer } from '~/infrastructure/messaging/consumers
 import { GetOwnerEmailConsumer } from '~/infrastructure/messaging/consumers/get-owner-email.consumer'
 import { GetLeafCategoryIdsConsumer } from '~/infrastructure/messaging/consumers/get-leaf-category-ids.consumer'
 import { GetUsersInfoConsumer } from '~/infrastructure/messaging/consumers/get-users-info.consumer'
+import { SagaUserConsumer } from '~/infrastructure/messaging/consumers/saga-user.consumer'
 
 @Module({
   imports: [
@@ -39,9 +40,18 @@ import { GetUsersInfoConsumer } from '~/infrastructure/messaging/consumers/get-u
           persistent: true,
         },
       },
+      {
+        name: 'SAGA_CLIENT',
+        transport: Transport.RMQ,
+        options: {
+          urls: ['amqp://admin:admin123@localhost:5672'],
+          queue: 'saga_queue',
+          persistent: true,
+        },
+      },
     ]),
   ],
-  controllers: [GetOwnerAndAddressConsumer, GetOwnerEmailConsumer, GetLeafCategoryIdsConsumer, GetUsersInfoConsumer],
+  controllers: [GetOwnerAndAddressConsumer, GetOwnerEmailConsumer, GetLeafCategoryIdsConsumer, GetUsersInfoConsumer, SagaUserConsumer],
   providers: [
     {
       provide: MESSAGE_PUBLISHER,
