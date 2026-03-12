@@ -36,6 +36,7 @@ import { SagaGetAddressHandler } from '~/application/commands/saga-get-address/s
 import { SagaRemoveCartItemsHandler } from '~/application/commands/saga-remove-cart-items/saga-remove-cart-items.command.handler'
 import { SagaVerifyPasscodeAndDeductHandler } from '~/application/commands/saga-verify-passcode-and-deduct/saga-verify-passcode-and-deduct.command.handler'
 import { SagaRefundWalletHandler } from '~/application/commands/saga-refund-wallet/saga-refund-wallet.command.handler'
+import { RefundWalletHandler } from '~/application/commands/refund-wallet/refund-wallet.command.handler'
 
 const CommandHandlers = [
   UpdateAvatarHandler,
@@ -59,6 +60,7 @@ const CommandHandlers = [
   SagaRemoveCartItemsHandler,
   SagaVerifyPasscodeAndDeductHandler,
   SagaRefundWalletHandler,
+  RefundWalletHandler,
 ]
 
 const QueryHandlers = [

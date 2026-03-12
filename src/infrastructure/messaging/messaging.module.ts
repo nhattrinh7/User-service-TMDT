@@ -8,6 +8,7 @@ import { GetOwnerEmailConsumer } from '~/infrastructure/messaging/consumers/get-
 import { GetLeafCategoryIdsConsumer } from '~/infrastructure/messaging/consumers/get-leaf-category-ids.consumer'
 import { GetUsersInfoConsumer } from '~/infrastructure/messaging/consumers/get-users-info.consumer'
 import { SagaUserConsumer } from '~/infrastructure/messaging/consumers/saga-user.consumer'
+import { RefundWalletConsumer } from '~/infrastructure/messaging/consumers/refund-wallet.consumer'
 
 @Module({
   imports: [
@@ -51,7 +52,7 @@ import { SagaUserConsumer } from '~/infrastructure/messaging/consumers/saga-user
       },
     ]),
   ],
-  controllers: [GetOwnerAndAddressConsumer, GetOwnerEmailConsumer, GetLeafCategoryIdsConsumer, GetUsersInfoConsumer, SagaUserConsumer],
+  controllers: [GetOwnerAndAddressConsumer, GetOwnerEmailConsumer, GetLeafCategoryIdsConsumer, GetUsersInfoConsumer, SagaUserConsumer, RefundWalletConsumer],
   providers: [
     {
       provide: MESSAGE_PUBLISHER,

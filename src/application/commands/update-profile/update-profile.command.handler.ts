@@ -3,6 +3,8 @@ import type { IUserRepository } from '~/domain/repositories/user.repository.inte
 import { USER_REPOSITORY } from '~/domain/repositories/user.repository.interface'
 import { UpdateProfileCommand } from '~/application/commands/update-profile/update-profile.command'
 import { ConflictException, Inject, NotFoundException } from '@nestjs/common'
+import { EventEmitter2 } from '@nestjs/event-emitter'
+import { CACHE_EVENT, CACHE_RESOURCE, CACHE_TYPE } from '~/common/constants/cache.constant'
 import { UpdateProfileResponseDto } from '~/presentation/dtos/user.dto'
 import { UserMapper } from '~/application/mappers/user.mapper'
 
@@ -11,6 +13,7 @@ export class UpdateProfileHandler implements ICommandHandler<UpdateProfileComman
   constructor(
     @Inject(USER_REPOSITORY)
     private readonly userRepository: IUserRepository,
+    private readonly eventEmitter: EventEmitter2,
   ) {}
 
   async execute(command: UpdateProfileCommand) {
@@ -26,6 +29,9 @@ export class UpdateProfileHandler implements ICommandHandler<UpdateProfileComman
     }
 
     const savedUser = await this.userRepository.update(user.id, body)
+
+    // Invalidate cache personal user
+    this.eventEmitter.emit(CACHE_EVENT.INVALIDATE, { type: CACHE_TYPE.PERSONAL, resource: CACHE_RESOURCE.USERS, id })
 
     return UserMapper.toUserResponse(savedUser)
   }

@@ -14,6 +14,7 @@ import {
   Post,
   Delete,
 } from '@nestjs/common'
+import { CacheTTL } from '@nestjs/cache-manager'
 import { CommandBus, QueryBus } from '@nestjs/cqrs'
 import { UpdateAvatarCommand } from '~/application/commands/update-avatar/update-avatar.command'
 import { GetProfileQuery } from '~/application/queries/get-profile/get-profile.query'
@@ -40,6 +41,10 @@ import { AddToCartBodyDto, DeleteCartItemsBodyDto, UpdateCartQuantityBodyDto } f
 import { AddToCartCommand } from '~/application/commands/add-to-cart/add-to-cart.command'
 import { DeleteCartItemsCommand } from '~/application/commands/delete-cart-items/delete-cart-items.command'
 import { UpdateCartQuantityCommand } from '~/application/commands/update-cart-quantity/update-cart-quantity.command'
+import { CustomCacheInterceptor } from '~/infrastructure/cache/custom-cache.interceptor'
+import { CacheType } from '~/infrastructure/cache/cache-type.decorator'
+import { CacheResource } from '~/infrastructure/cache/cache-prefix.decorator'
+import { CACHE_TYPE, CACHE_RESOURCE } from '~/common/constants/cache.constant'
 
 @Controller('v1/users')
 export class UserController {
@@ -158,6 +163,10 @@ export class UserController {
   // ===== DYNAMIC :id ROUTES (đặt SAU các static routes) =====
 
   @Get(':id')
+  @UseInterceptors(CustomCacheInterceptor)
+  @CacheType(CACHE_TYPE.PERSONAL)
+  @CacheResource(CACHE_RESOURCE.USERS)
+  @CacheTTL(600_000) // 10 phút
   async getProfile(@Param('id') id: string): Promise<any> {
     const result = await this.queryBus.execute(new GetProfileQuery(id))
     

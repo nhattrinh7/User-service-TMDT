@@ -3,6 +3,8 @@ import type { IUserRepository } from '~/domain/repositories/user.repository.inte
 import { USER_REPOSITORY } from '~/domain/repositories/user.repository.interface'
 import { UpdateAvatarCommand } from '~/application/commands/update-avatar/update-avatar.command'
 import { Inject, NotFoundException } from '@nestjs/common'
+import { EventEmitter2 } from '@nestjs/event-emitter'
+import { CACHE_EVENT, CACHE_RESOURCE, CACHE_TYPE } from '~/common/constants/cache.constant'
 import { UploadAvatarResponseDto } from '~/presentation/dtos/user.dto'
 import { UserMapper } from '~/application/mappers/user.mapper'
 import { CloudinaryService } from '~/common/services/cloudinary.service'
@@ -14,6 +16,7 @@ export class UpdateAvatarHandler implements ICommandHandler<UpdateAvatarCommand,
     @Inject(USER_REPOSITORY)
     private readonly userRepository: IUserRepository,
     private readonly cloudinaryService: CloudinaryService,
+    private readonly eventEmitter: EventEmitter2,
   ) {}
 
   async execute(command: UpdateAvatarCommand) {
@@ -40,6 +43,9 @@ export class UpdateAvatarHandler implements ICommandHandler<UpdateAvatarCommand,
     if (oldAvatarPublicId) {
       await this.cloudinaryService.deleteImageFromCloudinary(oldAvatarPublicId)
     }
+
+    // Invalidate cache personal user
+    this.eventEmitter.emit(CACHE_EVENT.INVALIDATE, { type: CACHE_TYPE.PERSONAL, resource: CACHE_RESOURCE.USERS, id })
 
     return UserMapper.toUserResponse(user)
   }
