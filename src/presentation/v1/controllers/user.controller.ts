@@ -1,4 +1,4 @@
-import {
+﻿import {
   Controller,
   Param,
   UseInterceptors,
@@ -18,6 +18,7 @@ import { CacheTTL } from '@nestjs/cache-manager'
 import { CommandBus, QueryBus } from '@nestjs/cqrs'
 import { UpdateAvatarCommand } from '~/application/commands/update-avatar/update-avatar.command'
 import { GetProfileQuery } from '~/application/queries/get-profile/get-profile.query'
+import { GetWalletBalanceQuery } from '~/application/queries/get-wallet-balance/get-wallet-balance.query'
 import type { Express } from 'express'
 import { FileInterceptor } from '@nestjs/platform-express'
 import type { ChangePasswordBodyDto, UpdateProfileBodyDto, CreatePassCodeBodyDto, ChangePassCodeBodyDto, ResetPassCodeBodyDto } from '~/presentation/dtos/user.dto'
@@ -53,7 +54,7 @@ export class UserController {
     private readonly queryBus: QueryBus,
   ) {}
 
-  // ===== STATIC ROUTES (phải đặt TRƯỚC :id routes) =====
+  // ===== STATIC ROUTES (pháº£i Ä‘áº·t TRÆ¯á»šC :id routes) =====
 
   @Put('add-to-cart')
   async addToCart(
@@ -148,7 +149,7 @@ export class UserController {
     @Headers('x-user-id') userId: string,
   ): Promise<any> {
     await this.commandBus.execute(new RequestPassCodeResetCommand(userId))
-    return { message: 'OTP đã được gửi đến email của bạn' }
+    return { message: 'OTP Ä‘Ã£ Ä‘Æ°á»£c gá»­i Ä‘áº¿n email cá»§a báº¡n' }
   }
 
   @Put('reset-pass-code')
@@ -160,13 +161,21 @@ export class UserController {
     return { message: 'Reset passcode successful' }
   }
 
-  // ===== DYNAMIC :id ROUTES (đặt SAU các static routes) =====
+  @Get('wallet')
+  async getWalletBalance(
+    @Headers('x-user-id') userId: string,
+  ): Promise<any> {
+    return this.queryBus.execute(new GetWalletBalanceQuery(userId))
+  }
+
+
+  // ===== DYNAMIC :id ROUTES (Ä‘áº·t SAU cÃ¡c static routes) =====
 
   @Get(':id')
   @UseInterceptors(CustomCacheInterceptor)
   @CacheType(CACHE_TYPE.PERSONAL)
   @CacheResource(CACHE_RESOURCE.USERS)
-  @CacheTTL(600_000) // 10 phút
+  @CacheTTL(600_000) // 10 phÃºt
   async getProfile(@Param('id') id: string): Promise<any> {
     const result = await this.queryBus.execute(new GetProfileQuery(id))
     
@@ -257,3 +266,5 @@ export class UserController {
   }
   
 }
+
+

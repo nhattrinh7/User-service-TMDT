@@ -1,4 +1,4 @@
-import { Module } from '@nestjs/common'
+﻿import { Module } from '@nestjs/common'
 import { CqrsModule } from '@nestjs/cqrs'
 import { DatabaseModule } from '~/infrastructure/database/database.module'
 import { MessagingModule } from '~/infrastructure/messaging/messaging.module'
@@ -37,6 +37,7 @@ import { SagaRemoveCartItemsHandler } from '~/application/commands/saga-remove-c
 import { SagaVerifyPasscodeAndDeductHandler } from '~/application/commands/saga-verify-passcode-and-deduct/saga-verify-passcode-and-deduct.command.handler'
 import { SagaRefundWalletHandler } from '~/application/commands/saga-refund-wallet/saga-refund-wallet.command.handler'
 import { RefundWalletHandler } from '~/application/commands/refund-wallet/refund-wallet.command.handler'
+import { GetWalletBalanceHandler } from '~/application/queries/get-wallet-balance/get-wallet-balance.query.handler'
 
 const CommandHandlers = [
   UpdateAvatarHandler,
@@ -76,6 +77,7 @@ const QueryHandlers = [
   CountCartItemsHandler,
   GetCartHandler,
   CheckPassCodeHandler,
+  GetWalletBalanceHandler,
 ]
 
 const EventHandlers = [

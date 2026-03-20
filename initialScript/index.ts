@@ -104,6 +104,14 @@ const main = async () => {
     },
   })
 
+  await prisma.wallet.create({
+    data: {
+      id: uuidv4(),
+      userId: superAdmin.id,
+      balance: 0,
+    }
+  })
+
   // Tạo tài khoản customer admin mặc định
   const customerAdminRole = await prisma.role.findFirstOrThrow({
     where: {
@@ -223,7 +231,7 @@ const main = async () => {
   const leisureAdminPassword = await hashPassword(process.env.LEISURE_ADMIN_PASSWORD!)
   const leisureAdmin = await prisma.user.create({
     data: {
-      id: uuidv4(),
+      id: 'ebb52785-f0c7-4cee-aff0-6045fd1c7f0b',
       username: 'leisureadmin',
       email: process.env.LEISURE_ADMIN_EMAIL!,
       password: leisureAdminPassword,
