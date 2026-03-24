@@ -91,7 +91,7 @@ const main = async () => {
   const superAdminPassword = await hashPassword(process.env.SUPER_ADMIN_PASSWORD!)
   const superAdmin = await prisma.user.create({
     data: {
-      id: uuidv4(),
+      id: 'ebb52785-f0c7-4cee-aff0-6045fd1c7f0b',
       username: 'superadmin',
       email: process.env.SUPER_ADMIN_EMAIL!,
       password: superAdminPassword,
@@ -121,7 +121,7 @@ const main = async () => {
   const customerAdminPassword = await hashPassword(process.env.CUSTOMER_ADMIN_PASSWORD!)
   const customerAdmin = await prisma.user.create({
     data: {
-      id: uuidv4(),
+      id: '77327cb5-322a-4818-818a-425c6ae58f16',
       username: 'customeradmin',
       email: process.env.CUSTOMER_ADMIN_EMAIL!,
       password: customerAdminPassword,
@@ -143,7 +143,7 @@ const main = async () => {
   const fashionAdminPassword = await hashPassword(process.env.FASHION_ADMIN_PASSWORD!)
   const fashionAdmin = await prisma.user.create({
     data: {
-      id: uuidv4(),
+      id: '4d3b8c10-fa6b-444b-bcf2-3a4ef3175133',
       username: 'fashionadmin',
       email: process.env.FASHION_ADMIN_EMAIL!,
       password: fashionAdminPassword,
@@ -165,7 +165,7 @@ const main = async () => {
   const beautyHealthAdminPassword = await hashPassword(process.env.BEAUTY_HEALTH_ADMIN_PASSWORD!)
   const beautyHealthAdmin = await prisma.user.create({
     data: {
-      id: uuidv4(),
+      id: 'b56906e3-bf87-4c30-abc1-82229ef24cb7',
       username: 'beautyhealthadmin',
       email: process.env.BEAUTY_HEALTH_ADMIN_EMAIL!,
       password: beautyHealthAdminPassword,
@@ -187,7 +187,7 @@ const main = async () => {
   const techAdminPassword = await hashPassword(process.env.TECH_ADMIN_PASSWORD!)
   const techAdmin = await prisma.user.create({
     data: {
-      id: uuidv4(),
+      id: 'f42d99a6-1e96-4d04-a087-ce14875ba1c7',
       username: 'techadmin',
       email: process.env.TECH_ADMIN_EMAIL!,
       password: techAdminPassword,
@@ -209,7 +209,7 @@ const main = async () => {
   const homeLifestyleAdminPassword = await hashPassword(process.env.HOME_LIFESTYLE_ADMIN_PASSWORD!)
   const homeLifestyleAdmin = await prisma.user.create({
     data: {
-      id: uuidv4(),
+      id: 'aa51f1a6-f338-42ad-8b2c-6cfb02b65d56',
       username: 'homelifestyleadmin',
       email: process.env.HOME_LIFESTYLE_ADMIN_EMAIL!,
       password: homeLifestyleAdminPassword,
@@ -231,7 +231,7 @@ const main = async () => {
   const leisureAdminPassword = await hashPassword(process.env.LEISURE_ADMIN_PASSWORD!)
   const leisureAdmin = await prisma.user.create({
     data: {
-      id: 'ebb52785-f0c7-4cee-aff0-6045fd1c7f0b',
+      id: 'bdd23524-a9c4-481f-bad4-a733bc39e597',
       username: 'leisureadmin',
       email: process.env.LEISURE_ADMIN_EMAIL!,
       password: leisureAdminPassword,
@@ -253,7 +253,7 @@ const main = async () => {
   const foodBeverageAdminPassword = await hashPassword(process.env.FOOD_BEVERAGE_ADMIN_PASSWORD!)
   const foodBeverageAdmin = await prisma.user.create({
     data: {
-      id: uuidv4(),
+      id: 'e33f99d6-17b5-4c8e-8f83-a01c50032d18',
       username: 'foodbeverageadmin',
       email: process.env.FOOD_BEVERAGE_ADMIN_EMAIL!,
       password: foodBeverageAdminPassword,
@@ -275,7 +275,7 @@ const main = async () => {
   const shipperPassword = await hashPassword(process.env.SHIPPER_PASSWORD!)
   const shipper = await prisma.user.create({
     data: {
-      id: uuidv4(),
+      id: '06e07f88-e3e8-45ca-9725-31cd5690d9e2',
       username: 'shipper',
       email: process.env.SHIPPER_EMAIL!,
       password: shipperPassword,
@@ -297,7 +297,7 @@ const main = async () => {
   const warehouseScannerPassword = await hashPassword(process.env.WAREHOUSE_SCANNER_PASSWORD!)
   const warehouseScanner1 = await prisma.user.create({
     data: {
-      id: uuidv4(),
+      id: '4d0932c1-fe92-4089-b8b4-d6aa8297332c',
       username: 'warehousescanner1',
       email: process.env.WAREHOUSE_SCANNER_1_EMAIL!,
       password: warehouseScannerPassword,
@@ -312,7 +312,7 @@ const main = async () => {
 
   const warehouseScanner2 = await prisma.user.create({
     data: {
-      id: uuidv4(),
+      id: '0dc5fb6e-5137-4bb0-af24-0bc394e1ccf9',
       username: 'warehousescanner2',
       email: process.env.WAREHOUSE_SCANNER_2_EMAIL!,
       password: warehouseScannerPassword,
@@ -327,7 +327,7 @@ const main = async () => {
 
   const warehouseScanner3 = await prisma.user.create({
     data: {
-      id: uuidv4(),
+      id: '7f6cd927-5c21-4df6-ab13-bf2fa70587bc',
       username: 'warehousescanner3',
       email: process.env.WAREHOUSE_SCANNER_3_EMAIL!,
       password: warehouseScannerPassword,
