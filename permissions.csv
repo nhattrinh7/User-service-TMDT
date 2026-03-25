@@ -88,6 +88,7 @@ cba067d7-689c-4709-9d01-74d874aef8a2,CREATE_PASS_CODE,,POST,/v1/users/pass-code,
 a0e07bb1-792f-4d04-a99c-9ea4a89c8eec,REQUEST_PASS_CODE_RESET,,POST,/v1/users/request-pass-code-reset,user-service,false,2026-03-24T09:34:28.383Z,2026-03-24T09:34:28.383Z
 66a961bb-b4ca-415d-80cc-b21c0d7732f2,RESET_PASS_CODE,,PUT,/v1/users/reset-pass-code,user-service,false,2026-03-24T09:34:28.383Z,2026-03-24T09:34:28.383Z
 a6feee4a-80d4-476e-a9ce-37f5de8eb1fb,GET_WALLET_BALANCE,,GET,/v1/users/wallet,user-service,false,2026-03-24T09:34:28.383Z,2026-03-24T09:34:28.383Z
+207550de-f589-409e-85fe-2522be98e10e,ADD_MONEY_TO_WALLET,,POST,/v1/users/wallet/add-money,user-service,false,2026-03-24T09:34:28.383Z,2026-03-24T09:34:28.383Z
 f30d3a9d-93dc-46b5-a451-24089eea1689,GET_PROFILE,,GET,/v1/users/:id,user-service,false,2026-03-24T09:34:28.383Z,2026-03-24T09:34:28.383Z
 facf3582-fb75-4d3b-a3ac-ca92f45a4404,UPDATE_AVATAR,,PATCH,/v1/users/:id/avatar,user-service,false,2026-03-24T09:34:28.383Z,2026-03-24T09:34:28.383Z
 6e68dc87-157b-4727-bce8-eb803d4e47f6,UPDATE_PROFILE,,PUT,/v1/users/:id,user-service,false,2026-03-24T09:34:28.383Z,2026-03-24T09:34:28.383Z

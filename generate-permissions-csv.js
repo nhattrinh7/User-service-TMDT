@@ -110,6 +110,7 @@ const permissions = [
   { name: 'REQUEST_PASS_CODE_RESET', method: 'POST', path: '/v1/users/request-pass-code-reset', module: 'user-service', isPublic: false },
   { name: 'RESET_PASS_CODE', method: 'PUT', path: '/v1/users/reset-pass-code', module: 'user-service', isPublic: false },
   { name: 'GET_WALLET_BALANCE', method: 'GET', path: '/v1/users/wallet', module: 'user-service', isPublic: false },
+  { name: 'ADD_MONEY_TO_WALLET', method: 'POST', path: '/v1/users/wallet/add-money', module: 'user-service', isPublic: false },
   { name: 'GET_PROFILE', method: 'GET', path: '/v1/users/:id', module: 'user-service', isPublic: false },
   { name: 'UPDATE_AVATAR', method: 'PATCH', path: '/v1/users/:id/avatar', module: 'user-service', isPublic: false },
   { name: 'UPDATE_PROFILE', method: 'PUT', path: '/v1/users/:id', module: 'user-service', isPublic: false },

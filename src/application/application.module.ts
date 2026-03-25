@@ -38,6 +38,8 @@ import { SagaVerifyPasscodeAndDeductHandler } from '~/application/commands/saga-
 import { SagaRefundWalletHandler } from '~/application/commands/saga-refund-wallet/saga-refund-wallet.command.handler'
 import { RefundWalletHandler } from '~/application/commands/refund-wallet/refund-wallet.command.handler'
 import { GetWalletBalanceHandler } from '~/application/queries/get-wallet-balance/get-wallet-balance.query.handler'
+import { UpdateUserRoleHandler } from '~/application/commands/update-user-role/update-user-role.command.handler'
+import { AddMoneyToWalletHandler } from '~/application/commands/add-money-to-wallet/add-money-to-wallet.command.handler'
 
 const CommandHandlers = [
   UpdateAvatarHandler,
@@ -62,6 +64,8 @@ const CommandHandlers = [
   SagaVerifyPasscodeAndDeductHandler,
   SagaRefundWalletHandler,
   RefundWalletHandler,
+  AddMoneyToWalletHandler,
+  UpdateUserRoleHandler,
 ]
 
 const QueryHandlers = [

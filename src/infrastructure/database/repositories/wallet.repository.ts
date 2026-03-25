@@ -31,6 +31,13 @@ export class WalletRepository implements IWalletRepository {
     })
   }
 
+  async addBalance(userId: string, amount: number): Promise<void> {
+    await this.prisma.wallet.update({
+      where: { userId },
+      data: { balance: { increment: amount } },
+    })
+  }
+
   async refundBalance(userId: string, amount: number): Promise<void> {
     await this.prisma.wallet.update({
       where: { userId },

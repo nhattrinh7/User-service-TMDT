@@ -23,6 +23,11 @@ export class UserDto extends createZodDto(UserSchema) {}
 export class GetProfileResponseDto extends createZodDto(UserSchema) {}
 export class UploadAvatarResponseDto extends createZodDto(UserSchema) {}
 
+export const addMoneyToWalletBodySchema = z.object({
+  amount: z.coerce.number().positive(),
+})
+export class AddMoneyToWalletBodyDto extends createZodDto(addMoneyToWalletBodySchema) {}
+
 export const updateProfileBodySchema = z.object({
   username: z.string(),
   fullName: z.string(),

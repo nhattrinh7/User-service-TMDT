@@ -22,6 +22,7 @@ import { GetWalletBalanceQuery } from '~/application/queries/get-wallet-balance/
 import type { Express } from 'express'
 import { FileInterceptor } from '@nestjs/platform-express'
 import type { ChangePasswordBodyDto, UpdateProfileBodyDto, CreatePassCodeBodyDto, ChangePassCodeBodyDto, ResetPassCodeBodyDto } from '~/presentation/dtos/user.dto'
+import { AddMoneyToWalletBodyDto } from '~/presentation/dtos/user.dto'
 import { UpdateProfileCommand } from '~/application/commands/update-profile/update-profile.command'
 import { GetAddressesQuery } from '~/application/queries/get-addresses/get-addresses.query'
 import { AddAddressBodyDto, UpdateAddressBodyDto } from '~/presentation/dtos/address.dto'
@@ -46,6 +47,7 @@ import { CustomCacheInterceptor } from '~/infrastructure/cache/custom-cache.inte
 import { CacheType } from '~/infrastructure/cache/cache-type.decorator'
 import { CacheResource } from '~/infrastructure/cache/cache-prefix.decorator'
 import { CACHE_TYPE, CACHE_RESOURCE } from '~/common/constants/cache.constant'
+import { AddMoneyToWalletCommand } from '~/application/commands/add-money-to-wallet/add-money-to-wallet.command'
 
 @Controller('v1/users')
 export class UserController {
@@ -166,6 +168,18 @@ export class UserController {
     @Headers('x-user-id') userId: string,
   ): Promise<any> {
     return this.queryBus.execute(new GetWalletBalanceQuery(userId))
+  }
+
+  @Post('wallet/add-money')
+  async addMoneyToWallet(
+    @Body() body: AddMoneyToWalletBodyDto,
+    @Headers('x-user-id') userId: string,
+  ): Promise<any> {
+    const result = await this.commandBus.execute(
+      new AddMoneyToWalletCommand(userId, body.amount)
+    )
+
+    return { message: 'Nạp tiền vào ví thành công', data: result }
   }
 
 

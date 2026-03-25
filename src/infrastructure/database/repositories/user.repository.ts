@@ -113,6 +113,21 @@ export class UserRepository implements IUserRepository {
     return UserMapper.toDomain(saved)
   }
 
+  async updateRole(userId: string, roleId: string): Promise<User> {
+    const saved = await this.prisma.user.update({
+      where: { id: userId },
+      data: { roleId },
+    })
+    return UserMapper.toDomain(saved)
+  }
+
+  async findRoleIdByName(roleName: string): Promise<string | null> {
+    const role = await this.prisma.role.findUnique({
+      where: { name: roleName }
+    })
+    return role?.id ?? null
+  }
+
   async findByIds(ids: string[]): Promise<User[]> {
     const users = await this.prisma.user.findMany({
       where: { id: { in: ids } }
