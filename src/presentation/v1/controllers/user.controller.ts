@@ -36,7 +36,7 @@ import { ChangePassCodeCommand } from '~/application/commands/change-pass-code/c
 import { RequestPassCodeResetCommand } from '~/application/commands/request-pass-code-reset/request-pass-code-reset.command'
 import { ResetPassCodeCommand } from '~/application/commands/reset-pass-code/reset-pass-code.command'
 import { CheckPassCodeQuery } from '~/application/queries/check-pass-code/check-pass-code.query'
-import { GetDefaultAddressQuery } from '~/application/queries/get-default-address/get-default-address.command'
+import { GetDefaultAddressQuery } from '~/application/queries/get-default-address/get-default-address.query'
 import { CountCartItemsQuery } from '~/application/queries/count-cart-items/count-cart-items.query'
 import { GetCartQuery } from '~/application/queries/get-cart/get-cart.query'
 import { AddToCartBodyDto, DeleteCartItemsBodyDto, UpdateCartQuantityBodyDto } from '~/presentation/dtos/cart.dto'

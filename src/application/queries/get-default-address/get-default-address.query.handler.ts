@@ -4,7 +4,7 @@ import type { IAddressRepository } from '~/domain/repositories/address.repositor
 import { USER_REPOSITORY } from '~/domain/repositories/user.repository.interface'
 import { ADDRESS_REPOSITORY } from '~/domain/repositories/address.repository.interface'
 import { Inject, NotFoundException } from '@nestjs/common'
-import { GetDefaultAddressQuery } from '~/application/queries/get-default-address/get-default-address.command'
+import { GetDefaultAddressQuery } from '~/application/queries/get-default-address/get-default-address.query'
 import { AddressDto } from '~/presentation/dtos/address.dto'
 import { AddressMapper } from '~/application/mappers/address.mapper'
 
