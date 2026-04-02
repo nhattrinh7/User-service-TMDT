@@ -40,6 +40,7 @@ model User {
   refreshTokens RefreshToken[]
   twofa         TwoFA?
 
+  @@index([status, createdAt(sort: Desc)])
   @@map("users")
 }
 
@@ -79,6 +80,7 @@ model Address {
 
   user User @relation(fields: [userId], references: [id])
 
+  @@index([userId, isDefault(sort: Desc), createdAt(sort: Desc)])
   @@map("addresses")
 }
 
@@ -101,6 +103,7 @@ model CartItem {
   user User @relation(fields: [userId], references: [id])
 
   @@unique([userId, productVariantId]) // khi user addtocart, nếu cart có item đó r thì chỉ cộng số lượng, ko dc tạo bản ghi mới
+  @@index([userId, createdAt(sort: Desc)])
   @@map("cart_items")
 }
 
@@ -130,6 +133,8 @@ model RoleCategory {
   role Role @relation(fields: [roleId], references: [id])
 
   @@unique([roleId, categoryId])
+  @@index([roleId, level])
+  @@index([roleId, isLeaf])
   @@map("role_categories")
 }
 
@@ -169,6 +174,7 @@ model RefreshToken {
 
   user User @relation(fields: [userId], references: [id])
 
+  @@index([userId, userAgent])
   @@map("refresh_tokens")
 }
 
