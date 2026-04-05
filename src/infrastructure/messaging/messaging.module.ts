@@ -19,7 +19,7 @@ import { UpdateUserRoleConsumer } from '~/infrastructure/messaging/consumers/upd
         name: 'NOTIFICATION_CLIENT',
         transport: Transport.RMQ,
         options: {
-          urls: ['amqp://admin:admin123@localhost:5672'],
+          urls: [`amqp://admin:admin123@${process.env.RABBITMQ_HOST || 'localhost'}:5672`],
           queue: 'notification_queue',
           persistent: true,
         },
@@ -28,7 +28,7 @@ import { UpdateUserRoleConsumer } from '~/infrastructure/messaging/consumers/upd
         name: 'SHOP_CLIENT',
         transport: Transport.RMQ,
         options: {
-          urls: ['amqp://admin:admin123@localhost:5672'],
+          urls: [`amqp://admin:admin123@${process.env.RABBITMQ_HOST || 'localhost'}:5672`],
           queue: 'shop_queue',
           persistent: true,
         },
@@ -37,7 +37,7 @@ import { UpdateUserRoleConsumer } from '~/infrastructure/messaging/consumers/upd
         name: 'CATALOG_CLIENT',
         transport: Transport.RMQ,
         options: {
-          urls: ['amqp://admin:admin123@localhost:5672'],
+          urls: [`amqp://admin:admin123@${process.env.RABBITMQ_HOST || 'localhost'}:5672`],
           queue: 'catalog_queue',
           persistent: true,
         },
@@ -46,7 +46,7 @@ import { UpdateUserRoleConsumer } from '~/infrastructure/messaging/consumers/upd
         name: 'SAGA_CLIENT',
         transport: Transport.RMQ,
         options: {
-          urls: ['amqp://admin:admin123@localhost:5672'],
+          urls: [`amqp://admin:admin123@${process.env.RABBITMQ_HOST || 'localhost'}:5672`],
           queue: 'saga_queue',
           persistent: true,
         },
