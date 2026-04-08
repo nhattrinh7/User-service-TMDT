@@ -6,7 +6,8 @@ import { Gender } from '~/domain/enums/user.enum'
 import * as dotenv from 'dotenv'
 
 // Load environment variables
-dotenv.config()
+const envPath = process.env.NODE_ENV === 'production' ? '.env.production' : '.env.development'
+dotenv.config({ path: envPath })
 
 const prisma = new PrismaService()
 
