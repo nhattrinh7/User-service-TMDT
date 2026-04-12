@@ -21,7 +21,13 @@ import { GetProfileQuery } from '~/application/queries/get-profile/get-profile.q
 import { GetWalletBalanceQuery } from '~/application/queries/get-wallet-balance/get-wallet-balance.query'
 import type { Express } from 'express'
 import { FileInterceptor } from '@nestjs/platform-express'
-import type { ChangePasswordBodyDto, UpdateProfileBodyDto, CreatePassCodeBodyDto, ChangePassCodeBodyDto, ResetPassCodeBodyDto } from '~/presentation/dtos/user.dto'
+import type {
+  ChangePasswordBodyDto,
+  UpdateProfileBodyDto,
+  CreatePassCodeBodyDto,
+  ChangePassCodeBodyDto,
+  ResetPassCodeBodyDto,
+} from '~/presentation/dtos/user.dto'
 import { AddMoneyToWalletBodyDto } from '~/presentation/dtos/user.dto'
 import { UpdateProfileCommand } from '~/application/commands/update-profile/update-profile.command'
 import { GetAddressesQuery } from '~/application/queries/get-addresses/get-addresses.query'
@@ -39,7 +45,11 @@ import { CheckPassCodeQuery } from '~/application/queries/check-pass-code/check-
 import { GetDefaultAddressQuery } from '~/application/queries/get-default-address/get-default-address.query'
 import { CountCartItemsQuery } from '~/application/queries/count-cart-items/count-cart-items.query'
 import { GetCartQuery } from '~/application/queries/get-cart/get-cart.query'
-import { AddToCartBodyDto, DeleteCartItemsBodyDto, UpdateCartQuantityBodyDto } from '~/presentation/dtos/cart.dto'
+import {
+  AddToCartBodyDto,
+  DeleteCartItemsBodyDto,
+  UpdateCartQuantityBodyDto,
+} from '~/presentation/dtos/cart.dto'
 import { AddToCartCommand } from '~/application/commands/add-to-cart/add-to-cart.command'
 import { DeleteCartItemsCommand } from '~/application/commands/delete-cart-items/delete-cart-items.command'
 import { UpdateCartQuantityCommand } from '~/application/commands/update-cart-quantity/update-cart-quantity.command'
@@ -64,9 +74,9 @@ export class UserController {
     @Headers('x-user-id') userId: string,
   ): Promise<any> {
     const result = await this.commandBus.execute(
-      new AddToCartCommand(userId, body.productVariantId, body.quantity)
+      new AddToCartCommand(userId, body.productVariantId, body.quantity),
     )
-    
+
     return { message: 'Add to cart successful', data: result }
   }
 
@@ -76,9 +86,9 @@ export class UserController {
     @Headers('x-user-id') userId: string,
   ): Promise<any> {
     const result = await this.commandBus.execute(
-      new DeleteCartItemsCommand(userId, body.productVariantIds)
+      new DeleteCartItemsCommand(userId, body.productVariantIds),
     )
-    
+
     return { message: 'Delete cart items successful', data: result }
   }
 
@@ -88,33 +98,26 @@ export class UserController {
     @Headers('x-user-id') userId: string,
   ): Promise<any> {
     const result = await this.commandBus.execute(
-      new UpdateCartQuantityCommand(userId, body.productVariantId, body.quantity)
+      new UpdateCartQuantityCommand(userId, body.productVariantId, body.quantity),
     )
-    
+
     return { message: 'Update cart quantity successful', data: result }
   }
 
   @Put('address/:id')
-  async updateAddress(
-    @Param('id') id: string,
-    @Body() body: UpdateAddressBodyDto, 
-  ): Promise<any> {
+  async updateAddress(@Param('id') id: string, @Body() body: UpdateAddressBodyDto): Promise<any> {
     await this.commandBus.execute(new UpdateAddressCommand(id, body))
     return { message: 'Update address successful' }
   }
 
   @Delete('address/:id')
-  async deleteAddress(
-    @Param('id') id: string
-  ): Promise<any> {
+  async deleteAddress(@Param('id') id: string): Promise<any> {
     await this.commandBus.execute(new DeleteAddressCommand(id))
     return { message: 'Delete address successful' }
   }
 
   @Patch('address/:id/set-default')
-  async setDefaultAddress(
-    @Param('id') id: string
-  ): Promise<any> {
+  async setDefaultAddress(@Param('id') id: string): Promise<any> {
     await this.commandBus.execute(new SetDefaultAddressCommand(id))
     return { message: 'Set default address successful' }
   }
@@ -122,9 +125,7 @@ export class UserController {
   // ===== PASSCODE ENDPOINTS =====
 
   @Get('check-pass-code')
-  async checkPassCode(
-    @Headers('x-user-id') userId: string,
-  ): Promise<any> {
+  async checkPassCode(@Headers('x-user-id') userId: string): Promise<any> {
     return this.queryBus.execute(new CheckPassCodeQuery(userId))
   }
 
@@ -147,9 +148,7 @@ export class UserController {
   }
 
   @Post('request-pass-code-reset')
-  async requestPassCodeReset(
-    @Headers('x-user-id') userId: string,
-  ): Promise<any> {
+  async requestPassCodeReset(@Headers('x-user-id') userId: string): Promise<any> {
     await this.commandBus.execute(new RequestPassCodeResetCommand(userId))
     return { message: 'OTP Ä‘Ã£ Ä‘Æ°á»£c gá»­i Ä‘áº¿n email cá»§a báº¡n' }
   }
@@ -164,9 +163,7 @@ export class UserController {
   }
 
   @Get('wallet')
-  async getWalletBalance(
-    @Headers('x-user-id') userId: string,
-  ): Promise<any> {
+  async getWalletBalance(@Headers('x-user-id') userId: string): Promise<any> {
     return this.queryBus.execute(new GetWalletBalanceQuery(userId))
   }
 
@@ -175,13 +172,10 @@ export class UserController {
     @Body() body: AddMoneyToWalletBodyDto,
     @Headers('x-user-id') userId: string,
   ): Promise<any> {
-    const result = await this.commandBus.execute(
-      new AddMoneyToWalletCommand(userId, body.amount)
-    )
+    const result = await this.commandBus.execute(new AddMoneyToWalletCommand(userId, body.amount))
 
     return { message: 'Nạp tiền vào ví thành công', data: result }
   }
-
 
   // ===== DYNAMIC :id ROUTES (Ä‘áº·t SAU cÃ¡c static routes) =====
 
@@ -192,7 +186,7 @@ export class UserController {
   @CacheTTL(600_000) // 10 phÃºt
   async getProfile(@Param('id') id: string): Promise<any> {
     const result = await this.queryBus.execute(new GetProfileQuery(id))
-    
+
     return { message: 'Get profile successful', data: result }
   }
 
@@ -219,10 +213,7 @@ export class UserController {
   }
 
   @Put(':id')
-  async updateProfile(
-    @Param('id') id: string,
-    @Body() body: UpdateProfileBodyDto
-  ): Promise<any> {
+  async updateProfile(@Param('id') id: string, @Body() body: UpdateProfileBodyDto): Promise<any> {
     const result = await this.commandBus.execute(new UpdateProfileCommand(id, body))
 
     return { message: 'Update profile successful', data: result }
@@ -231,22 +222,19 @@ export class UserController {
   @Get(':id/address')
   async getAddresses(@Param('id') userId: string): Promise<any> {
     const result = await this.queryBus.execute(new GetAddressesQuery(userId))
-    
+
     return { message: 'Get addresses successful', data: result }
   }
 
   @Get(':id/address/default')
   async getDefaultAddress(@Param('id') userId: string): Promise<any> {
     const result = await this.queryBus.execute(new GetDefaultAddressQuery(userId))
-    
+
     return { message: 'Get default address successful', data: result }
   }
 
   @Post(':id/address')
-  async addAddress(
-    @Param('id') userId: string,
-    @Body() body: AddAddressBodyDto,
-  ): Promise<any> {
+  async addAddress(@Param('id') userId: string, @Body() body: AddAddressBodyDto): Promise<any> {
     const address = await this.commandBus.execute(new AddAddressCommand(userId, body))
     return { message: 'Add address successful', data: address }
   }
@@ -254,7 +242,7 @@ export class UserController {
   @Put(':id/change-password')
   async changePassword(
     @Param('id') id: string,
-    @Body() body: ChangePasswordBodyDto, 
+    @Body() body: ChangePasswordBodyDto,
     @Headers('x-user-id') userId: string,
   ): Promise<any> {
     await this.commandBus.execute(new ChangePasswordCommand(userId, body))
@@ -262,23 +250,16 @@ export class UserController {
   }
 
   @Get(':id/count-cart-items')
-  async countCartItems(
-    @Param('id') userId: string
-  ): Promise<any> {
+  async countCartItems(@Param('id') userId: string): Promise<any> {
     const result = await this.queryBus.execute(new CountCartItemsQuery(userId))
-    
+
     return { message: 'Count cart items successful', data: result }
   }
 
   @Get(':id/cart')
-  async getCart(
-    @Param('id') userId: string
-  ): Promise<any> {
+  async getCart(@Param('id') userId: string): Promise<any> {
     const result = await this.queryBus.execute(new GetCartQuery(userId))
-    
+
     return { message: 'Get cart successful', data: result }
   }
-  
 }
-
-

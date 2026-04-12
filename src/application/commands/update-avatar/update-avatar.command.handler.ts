@@ -11,7 +11,9 @@ import { CloudinaryService } from '~/common/services/cloudinary.service'
 import { extractCloudinaryPublicId, isCloudinaryUrl } from '~/common/utils/cloudinary.util'
 
 @CommandHandler(UpdateAvatarCommand)
-export class UpdateAvatarHandler implements ICommandHandler<UpdateAvatarCommand, UploadAvatarResponseDto> {
+export class UpdateAvatarHandler
+  implements ICommandHandler<UpdateAvatarCommand, UploadAvatarResponseDto>
+{
   constructor(
     @Inject(USER_REPOSITORY)
     private readonly userRepository: IUserRepository,
@@ -33,7 +35,7 @@ export class UpdateAvatarHandler implements ICommandHandler<UpdateAvatarCommand,
 
     // Upload avatar mới
     const uploadResult = await this.cloudinaryService.uploadImageToCloudinary(file, 'avatar')
-    
+
     // Cập nhật user
     user.avatar = uploadResult.secure_url
     await this.userRepository.save(user)
@@ -45,7 +47,11 @@ export class UpdateAvatarHandler implements ICommandHandler<UpdateAvatarCommand,
     }
 
     // Invalidate cache personal user
-    this.eventEmitter.emit(CACHE_EVENT.INVALIDATE, { type: CACHE_TYPE.PERSONAL, resource: CACHE_RESOURCE.USERS, id })
+    this.eventEmitter.emit(CACHE_EVENT.INVALIDATE, {
+      type: CACHE_TYPE.PERSONAL,
+      resource: CACHE_RESOURCE.USERS,
+      id,
+    })
 
     return UserMapper.toUserResponse(user)
   }

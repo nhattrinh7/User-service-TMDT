@@ -1,7 +1,10 @@
 import { CommandHandler, ICommandHandler } from '@nestjs/cqrs'
 import { DeleteAddressCommand } from '~/application/commands/delete-address/delete-address.command'
 import { Inject, NotFoundException } from '@nestjs/common'
-import { ADDRESS_REPOSITORY, type IAddressRepository } from '~/domain/repositories/address.repository.interface'
+import {
+  ADDRESS_REPOSITORY,
+  type IAddressRepository,
+} from '~/domain/repositories/address.repository.interface'
 
 @CommandHandler(DeleteAddressCommand)
 export class DeleteAddressHandler implements ICommandHandler<DeleteAddressCommand, void> {

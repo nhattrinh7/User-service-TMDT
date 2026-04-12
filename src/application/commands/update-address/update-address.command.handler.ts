@@ -2,7 +2,10 @@ import { CommandHandler, ICommandHandler } from '@nestjs/cqrs'
 import { UpdateAddressCommand } from '~/application/commands/update-address/update-address.command'
 import { Inject, InternalServerErrorException, NotFoundException } from '@nestjs/common'
 import { AddressDto } from '~/presentation/dtos/address.dto'
-import { ADDRESS_REPOSITORY, type IAddressRepository } from '~/domain/repositories/address.repository.interface'
+import {
+  ADDRESS_REPOSITORY,
+  type IAddressRepository,
+} from '~/domain/repositories/address.repository.interface'
 import { AddressMapper } from '~/application/mappers/address.mapper'
 
 @CommandHandler(UpdateAddressCommand)
@@ -26,9 +29,9 @@ export class UpdateAddressHandler implements ICommandHandler<UpdateAddressComman
       province: body.province,
       ward: body.ward,
       detail: body.detail,
-      isDefault: body.isDefault
+      isDefault: body.isDefault,
     })
-    
+
     const updatedAddress = await this.addressRepository.update(address)
     if (!updatedAddress) throw new InternalServerErrorException('Failed to update address')
 

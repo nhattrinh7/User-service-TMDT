@@ -1,11 +1,19 @@
 import { CommandHandler, ICommandHandler } from '@nestjs/cqrs'
 import { RequestPassCodeResetCommand } from '~/application/commands/request-pass-code-reset/request-pass-code-reset.command'
 import { BadRequestException, Inject, NotFoundException } from '@nestjs/common'
-import { type IUserRepository, USER_REPOSITORY } from '~/domain/repositories/user.repository.interface'
-import { type IMessagePublisher, MESSAGE_PUBLISHER } from '~/domain/contracts/message-publisher.interface'
+import {
+  type IUserRepository,
+  USER_REPOSITORY,
+} from '~/domain/repositories/user.repository.interface'
+import {
+  type IMessagePublisher,
+  MESSAGE_PUBLISHER,
+} from '~/domain/contracts/message-publisher.interface'
 
 @CommandHandler(RequestPassCodeResetCommand)
-export class RequestPassCodeResetHandler implements ICommandHandler<RequestPassCodeResetCommand, void> {
+export class RequestPassCodeResetHandler
+  implements ICommandHandler<RequestPassCodeResetCommand, void>
+{
   constructor(
     @Inject(USER_REPOSITORY)
     private readonly userRepository: IUserRepository,

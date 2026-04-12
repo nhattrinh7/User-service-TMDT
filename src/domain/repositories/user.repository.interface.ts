@@ -9,7 +9,12 @@ export interface IUserRepository {
   save(user: User): Promise<User>
   update(userId: string, data: UpdateProfileBodyDto): Promise<User>
   findByUsername(username: string): Promise<User | null>
-  getUsersPaginated(page: number, limit: number, search?: string, status?: string): Promise<PaginatedResult<User>>
+  getUsersPaginated(
+    page: number,
+    limit: number,
+    search?: string,
+    status?: string,
+  ): Promise<PaginatedResult<User>>
   updateStatus(userId: string, status: string): Promise<User>
   updateRole(userId: string, roleId: string): Promise<User>
   findRoleIdByName(roleName: string): Promise<string | null>

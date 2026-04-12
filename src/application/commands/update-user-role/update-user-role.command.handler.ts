@@ -27,6 +27,10 @@ export class UpdateUserRoleHandler implements ICommandHandler<UpdateUserRoleComm
     await this.userRepository.updateRole(userId, sellerRoleId)
 
     // Invalidate cache personal user
-    this.eventEmitter.emit(CACHE_EVENT.INVALIDATE, { type: CACHE_TYPE.PERSONAL, resource: CACHE_RESOURCE.USERS, id: userId })
+    this.eventEmitter.emit(CACHE_EVENT.INVALIDATE, {
+      type: CACHE_TYPE.PERSONAL,
+      resource: CACHE_RESOURCE.USERS,
+      id: userId,
+    })
   }
 }

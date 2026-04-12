@@ -1,7 +1,10 @@
 import { CommandHandler, ICommandHandler } from '@nestjs/cqrs'
 import { CreatePassCodeCommand } from '~/application/commands/create-pass-code/create-pass-code.command'
 import { BadRequestException, Inject, NotFoundException } from '@nestjs/common'
-import { type IUserRepository, USER_REPOSITORY } from '~/domain/repositories/user.repository.interface'
+import {
+  type IUserRepository,
+  USER_REPOSITORY,
+} from '~/domain/repositories/user.repository.interface'
 
 @CommandHandler(CreatePassCodeCommand)
 export class CreatePassCodeHandler implements ICommandHandler<CreatePassCodeCommand, void> {

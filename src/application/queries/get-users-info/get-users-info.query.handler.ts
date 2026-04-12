@@ -1,6 +1,9 @@
 import { QueryHandler, IQueryHandler } from '@nestjs/cqrs'
 import { Inject } from '@nestjs/common'
-import { USER_REPOSITORY, type IUserRepository } from '~/domain/repositories/user.repository.interface'
+import {
+  USER_REPOSITORY,
+  type IUserRepository,
+} from '~/domain/repositories/user.repository.interface'
 import { GetUsersInfoQuery } from '~/application/queries/get-users-info/get-users-info.query'
 
 export interface UserInfoDto {

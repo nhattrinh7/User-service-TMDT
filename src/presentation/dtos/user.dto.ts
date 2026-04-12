@@ -48,40 +48,52 @@ export const getUsersPaginatedQueryDto = z.object({
   page: z
     .string()
     .optional()
-    .transform((val) => (val ? parseInt(val, 10) : 1)) // chuyển kiểu dữ liệu sang int, nếu không có giá trị thì mặc định là 1
+    .transform(val => (val ? parseInt(val, 10) : 1)) // chuyển kiểu dữ liệu sang int, nếu không có giá trị thì mặc định là 1
     .pipe(z.number().int().positive()), // xác thực lại sau khi chuyển kiểu dữ liệu
-  
+
   limit: z
     .string()
     .optional()
-    .transform((val) => (val ? parseInt(val, 10) : 10)) // chuyển kiểu dữ liệu sang int, nếu không có giá trị thì mặc định là 10
+    .transform(val => (val ? parseInt(val, 10) : 10)) // chuyển kiểu dữ liệu sang int, nếu không có giá trị thì mặc định là 10
     .pipe(z.number().int().positive().max(10)),
-  
+
   search: z
     .string()
     .optional()
-    .transform((val) => val || undefined), // "laptop" → "laptop", "" → undefined, undefined → undefined
-    // lí do mà "" → undefined là vì nếu ko muốn search thì đã ko cần truyền search vào url, đã search thì phải có giá trị
-    // đằng này lại truyền search="" để làm quái gì, coi như ko truyền search vào cho rồi
-  
-  status: z.enum([UserStatus.ACTIVE, UserStatus.BANNED]).optional()
+    .transform(val => val || undefined), // "laptop" → "laptop", "" → undefined, undefined → undefined
+  // lí do mà "" → undefined là vì nếu ko muốn search thì đã ko cần truyền search vào url, đã search thì phải có giá trị
+  // đằng này lại truyền search="" để làm quái gì, coi như ko truyền search vào cho rồi
+
+  status: z.enum([UserStatus.ACTIVE, UserStatus.BANNED]).optional(),
 })
 export class GetUsersPaginatedQueryDto extends createZodDto(getUsersPaginatedQueryDto) {}
 
 // ===== PASSCODE DTOs =====
 export const createPassCodeBodyDto = z.object({
-  passCode: z.string().length(6).regex(/^\d{6}$/, 'Passcode phải là 6 chữ số'),
+  passCode: z
+    .string()
+    .length(6)
+    .regex(/^\d{6}$/, 'Passcode phải là 6 chữ số'),
 })
 export type CreatePassCodeBodyDto = z.infer<typeof createPassCodeBodyDto>
 
 export const changePassCodeBodyDto = z.object({
-  currentPassCode: z.string().length(6).regex(/^\d{6}$/, 'Passcode phải là 6 chữ số'),
-  newPassCode: z.string().length(6).regex(/^\d{6}$/, 'Passcode phải là 6 chữ số'),
+  currentPassCode: z
+    .string()
+    .length(6)
+    .regex(/^\d{6}$/, 'Passcode phải là 6 chữ số'),
+  newPassCode: z
+    .string()
+    .length(6)
+    .regex(/^\d{6}$/, 'Passcode phải là 6 chữ số'),
 })
 export type ChangePassCodeBodyDto = z.infer<typeof changePassCodeBodyDto>
 
 export const resetPassCodeBodyDto = z.object({
   otp: z.string().length(6),
-  newPassCode: z.string().length(6).regex(/^\d{6}$/, 'Passcode phải là 6 chữ số'),
+  newPassCode: z
+    .string()
+    .length(6)
+    .regex(/^\d{6}$/, 'Passcode phải là 6 chữ số'),
 })
 export type ResetPassCodeBodyDto = z.infer<typeof resetPassCodeBodyDto>

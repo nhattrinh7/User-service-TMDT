@@ -6,10 +6,10 @@ export class UserMapper {
     return {
       id: user.id,
       username: user.username,
-      email: user.email.value,              
+      email: user.email.value,
       roleId: user.roleId,
-      fullName: user.fullName.value,        
-      phoneNumber: user.phoneNumber.value,  
+      fullName: user.fullName.value,
+      phoneNumber: user.phoneNumber.value,
       dob: user.dob,
       gender: user.gender,
       avatar: user.avatar,
@@ -18,6 +18,6 @@ export class UserMapper {
       emailVerified: user.emailVerified,
       createdAt: user.createdAt,
       updatedAt: user.updatedAt,
-    } 
+    }
   }
 }

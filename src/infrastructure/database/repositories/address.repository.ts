@@ -13,8 +13,8 @@ export class AddressRepository implements IAddressRepository {
       where: { userId },
       orderBy: [
         { isDefault: 'desc' }, // Địa chỉ mặc định lên đầu
-        { createdAt: 'desc' }  // Mới nhất tiếp theo 
-      ]
+        { createdAt: 'desc' }, // Mới nhất tiếp theo
+      ],
     })
 
     return AddressMapper.toDomain(addresses)
@@ -36,7 +36,7 @@ export class AddressRepository implements IAddressRepository {
     const addressToAdd = AddressMapper.toPersistence(address)
 
     const newAddress = await this.prisma.address.create({
-      data: addressToAdd
+      data: addressToAdd,
     })
 
     return AddressMapper.toSingleDomainAddress(newAddress)
@@ -44,14 +44,14 @@ export class AddressRepository implements IAddressRepository {
 
   async findById(id: string): Promise<Address | null> {
     const address = await this.prisma.address.findFirst({
-      where: { id: id }
+      where: { id: id },
     })
     return AddressMapper.toSingleDomainAddress(address)
   }
 
   async deleteAddress(id: string): Promise<void> {
     await this.prisma.address.delete({
-      where: { id: id }
+      where: { id: id },
     })
   }
 
@@ -66,26 +66,26 @@ export class AddressRepository implements IAddressRepository {
         ward: address.ward,
         detail: address.detail,
         isDefault: address.isDefault,
-        updatedAt: address.updatedAt
-      }
+        updatedAt: address.updatedAt,
+      },
     })
 
     return AddressMapper.toSingleDomainAddress(prismaAddress)!
   }
 
   async findDefaultByUserId(userId: string): Promise<Address | null> {
-  const address = await this.prisma.address.findFirst({
-    where: { 
-      userId,
-      isDefault: true 
-    }
-  })
-  return AddressMapper.toSingleDomainAddress(address)
-}
+    const address = await this.prisma.address.findFirst({
+      where: {
+        userId,
+        isDefault: true,
+      },
+    })
+    return AddressMapper.toSingleDomainAddress(address)
+  }
 
   async findByIds(ids: string[]): Promise<Address[]> {
     const addresses = await this.prisma.address.findMany({
-      where: { id: { in: ids } }
+      where: { id: { in: ids } },
     })
     return AddressMapper.toDomain(addresses)
   }

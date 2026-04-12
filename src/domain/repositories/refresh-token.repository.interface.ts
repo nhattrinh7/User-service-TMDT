@@ -1,5 +1,3 @@
-
-
 export interface SaveRefreshToken {
   userId: string
   token: string

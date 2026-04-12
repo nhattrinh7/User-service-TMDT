@@ -10,7 +10,9 @@ interface RemoveCartItemsResult {
 }
 
 @CommandHandler(SagaRemoveCartItemsCommand)
-export class SagaRemoveCartItemsHandler implements ICommandHandler<SagaRemoveCartItemsCommand, RemoveCartItemsResult> {
+export class SagaRemoveCartItemsHandler
+  implements ICommandHandler<SagaRemoveCartItemsCommand, RemoveCartItemsResult>
+{
   constructor(
     @Inject(USER_REPOSITORY)
     private readonly userRepository: IUserRepository,

@@ -21,7 +21,9 @@ class EnvConfig {
       TECH_ADMIN_EMAIL: this.configService.get<string>('TECH_ADMIN_EMAIL'),
       TECH_ADMIN_PASSWORD: this.configService.get<string>('TECH_ADMIN_PASSWORD'),
       HOME_LIFESTYLE_ADMIN_EMAIL: this.configService.get<string>('HOME_LIFESTYLE_ADMIN_EMAIL'),
-      HOME_LIFESTYLE_ADMIN_PASSWORD: this.configService.get<string>('HOME_LIFESTYLE_ADMIN_PASSWORD'),
+      HOME_LIFESTYLE_ADMIN_PASSWORD: this.configService.get<string>(
+        'HOME_LIFESTYLE_ADMIN_PASSWORD',
+      ),
       LEISURE_ADMIN_EMAIL: this.configService.get<string>('LEISURE_ADMIN_EMAIL'),
       LEISURE_ADMIN_PASSWORD: this.configService.get<string>('LEISURE_ADMIN_PASSWORD'),
       FOOD_BEVERAGE_ADMIN_EMAIL: this.configService.get<string>('FOOD_BEVERAGE_ADMIN_EMAIL'),
@@ -47,7 +49,9 @@ export const setConfigService = (configService: ConfigService) => {
 export const env = new Proxy({} as EnvConfig, {
   get(_, prop) {
     if (!envInstance) {
-      throw new Error('❌ EnvConfig not initialized! Call setConfigService() in AppModule constructor or main.ts')
+      throw new Error(
+        '❌ EnvConfig not initialized! Call setConfigService() in AppModule constructor or main.ts',
+      )
     }
     return envInstance[prop as keyof EnvConfig]
   },

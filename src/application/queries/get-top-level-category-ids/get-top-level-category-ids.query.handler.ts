@@ -5,7 +5,9 @@ import { Inject } from '@nestjs/common'
 import { GetTopLevelCategoryIdsQuery } from '~/application/queries/get-top-level-category-ids/get-top-level-category-ids.query'
 
 @QueryHandler(GetTopLevelCategoryIdsQuery)
-export class GetTopLevelCategoryIdsHandler implements IQueryHandler<GetTopLevelCategoryIdsQuery, string[]> {
+export class GetTopLevelCategoryIdsHandler
+  implements IQueryHandler<GetTopLevelCategoryIdsQuery, string[]>
+{
   constructor(
     @Inject(ROLE_CATEGORY_REPOSITORY)
     private readonly roleCategoryRepository: IRoleCategoryRepository,

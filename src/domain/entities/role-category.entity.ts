@@ -15,12 +15,6 @@ export class RoleCategory {
     level: number
     isLeaf: boolean
   }): RoleCategory {
-    return new RoleCategory(
-      uuidv4(),
-      props.roleId,
-      props.categoryId,
-      props.level,
-      props.isLeaf,
-    )
+    return new RoleCategory(uuidv4(), props.roleId, props.categoryId, props.level, props.isLeaf)
   }
 }

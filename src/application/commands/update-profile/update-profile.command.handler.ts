@@ -9,7 +9,9 @@ import { UpdateProfileResponseDto } from '~/presentation/dtos/user.dto'
 import { UserMapper } from '~/application/mappers/user.mapper'
 
 @CommandHandler(UpdateProfileCommand)
-export class UpdateProfileHandler implements ICommandHandler<UpdateProfileCommand, UpdateProfileResponseDto> {
+export class UpdateProfileHandler
+  implements ICommandHandler<UpdateProfileCommand, UpdateProfileResponseDto>
+{
   constructor(
     @Inject(USER_REPOSITORY)
     private readonly userRepository: IUserRepository,
@@ -31,7 +33,11 @@ export class UpdateProfileHandler implements ICommandHandler<UpdateProfileComman
     const savedUser = await this.userRepository.update(user.id, body)
 
     // Invalidate cache personal user
-    this.eventEmitter.emit(CACHE_EVENT.INVALIDATE, { type: CACHE_TYPE.PERSONAL, resource: CACHE_RESOURCE.USERS, id })
+    this.eventEmitter.emit(CACHE_EVENT.INVALIDATE, {
+      type: CACHE_TYPE.PERSONAL,
+      resource: CACHE_RESOURCE.USERS,
+      id,
+    })
 
     return UserMapper.toUserResponse(savedUser)
   }

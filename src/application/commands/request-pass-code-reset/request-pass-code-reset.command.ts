@@ -1,5 +1,3 @@
 export class RequestPassCodeResetCommand {
-  constructor(
-    public readonly userId: string,
-  ) {}
+  constructor(public readonly userId: string) {}
 }

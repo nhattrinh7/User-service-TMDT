@@ -10,4 +10,3 @@ export const UserStatus = {
   BANNED: 'BANNED',
 } as const
 export type UserStatus = (typeof UserStatus)[keyof typeof UserStatus]
-

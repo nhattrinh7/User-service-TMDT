@@ -38,31 +38,31 @@ export class RoleCategoryRepository implements IRoleCategoryRepository {
       where: { roleId },
     })
 
-    return roleCategories.map((rc) => RoleCategoryMapper.toDomain(rc))
+    return roleCategories.map(rc => RoleCategoryMapper.toDomain(rc))
   }
 
   async findTopLevelCategoryIdsByRoleId(roleId: string): Promise<string[]> {
     const roleCategories = await this.prisma.roleCategory.findMany({
-      where: { 
+      where: {
         roleId,
-        level: 1 
+        level: 1,
       },
       select: { categoryId: true },
     })
 
-    return roleCategories.map((rc) => rc.categoryId)
+    return roleCategories.map(rc => rc.categoryId)
   }
 
   async findLeafCategoryIdsByRoleId(roleId: string): Promise<string[]> {
     const roleCategories = await this.prisma.roleCategory.findMany({
-      where: { 
+      where: {
         roleId,
-        isLeaf: true 
+        isLeaf: true,
       },
       select: { categoryId: true },
     })
 
-    return roleCategories.map((rc) => rc.categoryId)
+    return roleCategories.map(rc => rc.categoryId)
   }
 
   async delete(id: string): Promise<void> {

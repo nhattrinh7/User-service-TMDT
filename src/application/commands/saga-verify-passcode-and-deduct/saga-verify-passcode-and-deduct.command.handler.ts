@@ -14,7 +14,9 @@ interface VerifyPasscodeAndDeductResult {
 }
 
 @CommandHandler(SagaVerifyPasscodeAndDeductCommand)
-export class SagaVerifyPasscodeAndDeductHandler implements ICommandHandler<SagaVerifyPasscodeAndDeductCommand, VerifyPasscodeAndDeductResult> {
+export class SagaVerifyPasscodeAndDeductHandler
+  implements ICommandHandler<SagaVerifyPasscodeAndDeductCommand, VerifyPasscodeAndDeductResult>
+{
   constructor(
     @Inject(WALLET_REPOSITORY)
     private readonly walletRepository: IWalletRepository,
@@ -23,7 +25,9 @@ export class SagaVerifyPasscodeAndDeductHandler implements ICommandHandler<SagaV
     private readonly prismaService: PrismaService,
   ) {}
 
-  async execute(command: SagaVerifyPasscodeAndDeductCommand): Promise<VerifyPasscodeAndDeductResult> {
+  async execute(
+    command: SagaVerifyPasscodeAndDeductCommand,
+  ): Promise<VerifyPasscodeAndDeductResult> {
     const { userId, passcode, amount } = command
 
     // Verify passcode (passCode nằm trên User entity, dùng domain method verifyPassCode)
@@ -39,24 +43,26 @@ export class SagaVerifyPasscodeAndDeductHandler implements ICommandHandler<SagaV
 
     // Transaction: check balance + deduct phải atomic để tránh race condition
     // (2 request đồng thời đều thấy đủ balance → cùng trừ)
-    return this.prismaService.transaction(async (tx) => {
-      // Lấy wallet trong transaction (đảm bảo isolation)
-      const wallet = await this.walletRepository.findByUserId(userId, tx)
-      if (!wallet) {
-        throw new Error('Ví không tồn tại')
-      }
+    return this.prismaService
+      .transaction(async tx => {
+        // Lấy wallet trong transaction (đảm bảo isolation)
+        const wallet = await this.walletRepository.findByUserId(userId, tx)
+        if (!wallet) {
+          throw new Error('Ví không tồn tại')
+        }
 
-      // Check balance
-      if (wallet.balance < amount) {
-        throw new Error('Số dư ví không đủ')
-      }
+        // Check balance
+        if (wallet.balance < amount) {
+          throw new Error('Số dư ví không đủ')
+        }
 
-      // Deduct balance (trong cùng transaction)
-      await this.walletRepository.deductBalance(userId, amount, tx)
+        // Deduct balance (trong cùng transaction)
+        await this.walletRepository.deductBalance(userId, amount, tx)
 
-      return { success: true, deductedAmount: amount }
-    }).catch((error: Error) => {
-      return { success: false, error: error.message }
-    })
+        return { success: true, deductedAmount: amount }
+      })
+      .catch((error: Error) => {
+        return { success: false, error: error.message }
+      })
   }
 }

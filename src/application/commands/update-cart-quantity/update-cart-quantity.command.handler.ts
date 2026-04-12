@@ -10,7 +10,9 @@ interface UpdateCartQuantityResponse {
 }
 
 @CommandHandler(UpdateCartQuantityCommand)
-export class UpdateCartQuantityHandler implements ICommandHandler<UpdateCartQuantityCommand, UpdateCartQuantityResponse> {
+export class UpdateCartQuantityHandler
+  implements ICommandHandler<UpdateCartQuantityCommand, UpdateCartQuantityResponse>
+{
   constructor(
     @Inject(USER_REPOSITORY)
     private readonly userRepository: IUserRepository,
@@ -24,7 +26,10 @@ export class UpdateCartQuantityHandler implements ICommandHandler<UpdateCartQuan
     if (!user) throw new NotFoundException(`User doesn't exist`)
 
     // Kiểm tra cart item có tồn tại không
-    const existingCartItem = await this.userRepository.findCartItemByUserAndVariant(userId, productVariantId)
+    const existingCartItem = await this.userRepository.findCartItemByUserAndVariant(
+      userId,
+      productVariantId,
+    )
     if (!existingCartItem) {
       throw new NotFoundException(`Cart item not found`)
     }

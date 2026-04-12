@@ -1,7 +1,6 @@
 import { Address } from '~/domain/entities/address.entity'
 import { AddressDto } from '~/presentation/dtos/address.dto'
 
-
 export class AddressMapper {
   static toAddressResponse(address: Address): AddressDto {
     return {
@@ -15,7 +14,7 @@ export class AddressMapper {
       isDefault: address.isDefault,
       createdAt: address.createdAt,
       updatedAt: address.updatedAt,
-    } 
+    }
   }
 
   // For array of addresses

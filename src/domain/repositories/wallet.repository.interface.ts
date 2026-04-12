@@ -1,5 +1,8 @@
 export interface IWalletRepository {
-  findByUserId(userId: string, tx?: any): Promise<{
+  findByUserId(
+    userId: string,
+    tx?: any,
+  ): Promise<{
     userId: string
     balance: number
   } | null>

@@ -1,7 +1,10 @@
 import { CommandHandler, ICommandHandler } from '@nestjs/cqrs'
 import { ChangePasswordCommand } from '~/application/commands/change-password/change-password.command'
 import { BadRequestException, Inject, NotFoundException } from '@nestjs/common'
-import { type IUserRepository, USER_REPOSITORY } from '~/domain/repositories/user.repository.interface'
+import {
+  type IUserRepository,
+  USER_REPOSITORY,
+} from '~/domain/repositories/user.repository.interface'
 
 @CommandHandler(ChangePasswordCommand)
 export class ChangePasswordHandler implements ICommandHandler<ChangePasswordCommand, void> {

@@ -10,17 +10,12 @@ interface UpdateUserRolePayload {
 
 @Controller()
 export class UpdateUserRoleConsumer extends BaseRetryConsumer {
-  constructor(
-    private readonly commandBus: CommandBus,
-  ) {
+  constructor(private readonly commandBus: CommandBus) {
     super()
   }
 
   @MessagePattern('update.user-role')
-  async handleUpdateUserRole(
-    @Payload() data: UpdateUserRolePayload,
-    @Ctx() context: RmqContext,
-  ) {
+  async handleUpdateUserRole(@Payload() data: UpdateUserRolePayload, @Ctx() context: RmqContext) {
     const result = await this.handleWithRetry(context, async () => {
       this.logger.log(`Event update.user-role received, userId=${data.userId}`)
 

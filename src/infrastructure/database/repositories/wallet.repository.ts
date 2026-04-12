@@ -6,7 +6,10 @@ import { IWalletRepository } from '~/domain/repositories/wallet.repository.inter
 export class WalletRepository implements IWalletRepository {
   constructor(private readonly prisma: PrismaService) {}
 
-  async findByUserId(userId: string, tx?: any): Promise<{
+  async findByUserId(
+    userId: string,
+    tx?: any,
+  ): Promise<{
     userId: string
     balance: number
   } | null> {

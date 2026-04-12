@@ -26,7 +26,9 @@ export class SagaUserConsumer extends BaseRetryConsumer {
     @Ctx() context: RmqContext,
   ) {
     await this.handleWithRetry(context, async () => {
-      this.logger.log(`[${getKongRequestId()}] Event saga.get-address received, sagaId=${data.sagaId}`)
+      this.logger.log(
+        `[${getKongRequestId()}] Event saga.get-address received, sagaId=${data.sagaId}`,
+      )
 
       try {
         const result = await this.commandBus.execute(
@@ -48,7 +50,9 @@ export class SagaUserConsumer extends BaseRetryConsumer {
           address: result.address,
         })
       } catch (error: any) {
-        this.logger.error(`[${getKongRequestId()}] saga.get-address failed, sagaId=${data.sagaId}: ${error.message}`)
+        this.logger.error(
+          `[${getKongRequestId()}] saga.get-address failed, sagaId=${data.sagaId}: ${error.message}`,
+        )
         this.messagePublisher.emitToSagaOrchestrator('saga.result.get-address', {
           sagaId: data.sagaId,
           success: false,
@@ -64,7 +68,9 @@ export class SagaUserConsumer extends BaseRetryConsumer {
     @Ctx() context: RmqContext,
   ) {
     await this.handleWithRetry(context, async () => {
-      this.logger.log(`[${getKongRequestId()}] Event saga.remove-cart-items received, sagaId=${data.sagaId}`)
+      this.logger.log(
+        `[${getKongRequestId()}] Event saga.remove-cart-items received, sagaId=${data.sagaId}`,
+      )
 
       try {
         const result = await this.commandBus.execute(
@@ -76,7 +82,9 @@ export class SagaUserConsumer extends BaseRetryConsumer {
           success: result.success,
         })
       } catch (error: any) {
-        this.logger.error(`[${getKongRequestId()}] saga.remove-cart-items failed, sagaId=${data.sagaId}: ${error.message}`)
+        this.logger.error(
+          `[${getKongRequestId()}] saga.remove-cart-items failed, sagaId=${data.sagaId}: ${error.message}`,
+        )
         this.messagePublisher.emitToSagaOrchestrator('saga.result.remove-cart-items', {
           sagaId: data.sagaId,
           success: false,
@@ -92,11 +100,18 @@ export class SagaUserConsumer extends BaseRetryConsumer {
     @Ctx() context: RmqContext,
   ) {
     await this.handleWithRetry(context, async () => {
-      this.logger.log(`[${getKongRequestId()}] Event saga.verify-passcode-and-deduct received, sagaId=${data.sagaId}`)
+      this.logger.log(
+        `[${getKongRequestId()}] Event saga.verify-passcode-and-deduct received, sagaId=${data.sagaId}`,
+      )
 
       try {
         const result = await this.commandBus.execute(
-          new SagaVerifyPasscodeAndDeductCommand(data.sagaId, data.userId, data.passcode, data.amount),
+          new SagaVerifyPasscodeAndDeductCommand(
+            data.sagaId,
+            data.userId,
+            data.passcode,
+            data.amount,
+          ),
         )
 
         if (!result.success) {
@@ -114,7 +129,9 @@ export class SagaUserConsumer extends BaseRetryConsumer {
           deductedAmount: result.deductedAmount,
         })
       } catch (error: any) {
-        this.logger.error(`[${getKongRequestId()}] saga.verify-passcode-and-deduct failed, sagaId=${data.sagaId}: ${error.message}`)
+        this.logger.error(
+          `[${getKongRequestId()}] saga.verify-passcode-and-deduct failed, sagaId=${data.sagaId}: ${error.message}`,
+        )
         this.messagePublisher.emitToSagaOrchestrator('saga.result.verify-passcode-and-deduct', {
           sagaId: data.sagaId,
           success: false,
@@ -130,14 +147,18 @@ export class SagaUserConsumer extends BaseRetryConsumer {
     @Ctx() context: RmqContext,
   ) {
     await this.handleWithRetry(context, async () => {
-      this.logger.log(`[${getKongRequestId()}] Event saga.refund-wallet received, sagaId=${data.sagaId}`)
+      this.logger.log(
+        `[${getKongRequestId()}] Event saga.refund-wallet received, sagaId=${data.sagaId}`,
+      )
 
       try {
         await this.commandBus.execute(
           new SagaRefundWalletCommand(data.sagaId, data.userId, data.amount),
         )
       } catch (error: any) {
-        this.logger.error(`[${getKongRequestId()}] saga.refund-wallet failed, sagaId=${data.sagaId}: ${error.message}`)
+        this.logger.error(
+          `[${getKongRequestId()}] saga.refund-wallet failed, sagaId=${data.sagaId}: ${error.message}`,
+        )
       }
     })
   }

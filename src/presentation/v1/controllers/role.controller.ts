@@ -1,8 +1,4 @@
-import {
-  Controller,
-  Get,
-  Param,
-} from '@nestjs/common'
+import { Controller, Get, Param } from '@nestjs/common'
 import { CommandBus, QueryBus } from '@nestjs/cqrs'
 import { GetTopLevelCategoryIdsQuery } from '~/application/queries/get-top-level-category-ids/get-top-level-category-ids.query'
 
@@ -14,9 +10,7 @@ export class RoleController {
   ) {}
 
   @Get('/:id/category-ids/top-level')
-  async getTopLevelCategoryIds(
-    @Param('id') roleId: string
-  ): Promise<any> {
+  async getTopLevelCategoryIds(@Param('id') roleId: string): Promise<any> {
     const result = await this.queryBus.execute(new GetTopLevelCategoryIdsQuery(roleId))
     return { message: 'Get top level categoryIds successful', data: result }
   }

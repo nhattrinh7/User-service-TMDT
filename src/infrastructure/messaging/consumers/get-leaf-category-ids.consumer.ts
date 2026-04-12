@@ -6,17 +6,12 @@ import { GetLeafCategoryIdsQuery } from '~/application/queries/get-leaf-category
 
 @Controller()
 export class GetLeafCategoryIdsConsumer extends BaseRetryConsumer {
-  constructor(
-    private readonly queryBus: QueryBus,
-  ) {
+  constructor(private readonly queryBus: QueryBus) {
     super()
   }
 
   @MessagePattern('get.leaf_categoryIds')
-  async handleGetLeafCategoryIds(
-    @Payload() roleId: string,
-    @Ctx() context: RmqContext,
-  ) {
+  async handleGetLeafCategoryIds(@Payload() roleId: string, @Ctx() context: RmqContext) {
     const result = await this.handleWithRetry(context, async () => {
       this.logger.log(`Event get.leaf_categoryIds received, roleId=${roleId}`)
       return await this.queryBus.execute(new GetLeafCategoryIdsQuery(roleId))

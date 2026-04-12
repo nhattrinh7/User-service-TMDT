@@ -7,7 +7,5 @@ export interface GetOwnerAndAddressPayload {
 }
 
 export class GetOwnerAndAddressQuery implements IQuery {
-  constructor(
-    public readonly data: GetOwnerAndAddressPayload[],
-  ) {}
+  constructor(public readonly data: GetOwnerAndAddressPayload[]) {}
 }

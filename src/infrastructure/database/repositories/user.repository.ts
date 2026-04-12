@@ -29,7 +29,7 @@ export class UserRepository implements IUserRepository {
 
   async save(user: User): Promise<User> {
     const data = UserMapper.toPersistence(user)
-    
+
     const saved = await this.prisma.user.upsert({
       where: { id: user.id },
       update: data,
@@ -48,14 +48,14 @@ export class UserRepository implements IUserRepository {
         phoneNumber: data.phoneNumber,
         dob: data.dob,
         gender: data.gender,
-      }
+      },
     })
     return UserMapper.toDomain(saved)
   }
 
   async findByUsername(username: string): Promise<User | null> {
     const user = await this.prisma.user.findUnique({
-      where: { username }
+      where: { username },
     })
 
     if (!user) return null
@@ -63,7 +63,12 @@ export class UserRepository implements IUserRepository {
     return UserMapper.toDomain(user)
   }
 
-  async getUsersPaginated(page: number, limit: number, search?: string, status?: string): Promise<PaginatedResult<User>> {
+  async getUsersPaginated(
+    page: number,
+    limit: number,
+    search?: string,
+    status?: string,
+  ): Promise<PaginatedResult<User>> {
     const skip = (page - 1) * limit
 
     const whereClause: any = {}
@@ -95,7 +100,7 @@ export class UserRepository implements IUserRepository {
     ])
 
     return {
-      data: users.map((user) => UserMapper.toDomain(user)),
+      data: users.map(user => UserMapper.toDomain(user)),
       meta: {
         total,
         page,
@@ -123,21 +128,21 @@ export class UserRepository implements IUserRepository {
 
   async findRoleIdByName(roleName: string): Promise<string | null> {
     const role = await this.prisma.role.findUnique({
-      where: { name: roleName }
+      where: { name: roleName },
     })
     return role?.id ?? null
   }
 
   async findByIds(ids: string[]): Promise<User[]> {
     const users = await this.prisma.user.findMany({
-      where: { id: { in: ids } }
+      where: { id: { in: ids } },
     })
-    return users.map((user) => UserMapper.toDomain(user))
+    return users.map(user => UserMapper.toDomain(user))
   }
 
   async countCartItems(userId: string): Promise<number> {
     const count = await this.prisma.cartItem.count({
-      where: { userId }
+      where: { userId },
     })
     return count
   }
@@ -145,17 +150,17 @@ export class UserRepository implements IUserRepository {
   async getCartItems(userId: string): Promise<any[]> {
     const cartItems = await this.prisma.cartItem.findMany({
       where: { userId },
-      orderBy: { createdAt: 'desc' }
+      orderBy: { createdAt: 'desc' },
     })
     return cartItems
   }
 
   async findCartItemByUserAndVariant(userId: string, productVariantId: string): Promise<any> {
     const cartItem = await this.prisma.cartItem.findFirst({
-      where: { 
+      where: {
         userId,
-        productVariantId 
-      }
+        productVariantId,
+      },
     })
     return cartItem
   }
@@ -174,22 +179,26 @@ export class UserRepository implements IUserRepository {
         price: cartItem.price,
         quantity: cartItem.quantity,
         createdAt: cartItem.createdAt,
-        updatedAt: cartItem.updatedAt
-      }
+        updatedAt: cartItem.updatedAt,
+      },
     })
     return cartItem
   }
 
-  async updateCartItemQuantity(userId: string, productVariantId: string, quantity: number): Promise<void> {
+  async updateCartItemQuantity(
+    userId: string,
+    productVariantId: string,
+    quantity: number,
+  ): Promise<void> {
     await this.prisma.cartItem.updateMany({
       where: {
         userId,
-        productVariantId
+        productVariantId,
       },
       data: {
         quantity,
-        updatedAt: new Date()
-      }
+        updatedAt: new Date(),
+      },
     })
   }
 
@@ -197,8 +206,8 @@ export class UserRepository implements IUserRepository {
     const result = await this.prisma.cartItem.deleteMany({
       where: {
         userId,
-        productVariantId: { in: productVariantIds }
-      }
+        productVariantId: { in: productVariantIds },
+      },
     })
     return result.count
   }

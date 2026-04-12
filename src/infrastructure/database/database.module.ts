@@ -39,7 +39,7 @@ import { CqrsModule } from '@nestjs/cqrs'
   ],
   exports: [
     PrismaService,
-    USER_REPOSITORY, 
+    USER_REPOSITORY,
     REFRESH_TOKEN_REPOSITORY,
     ADDRESS_REPOSITORY,
     ROLE_CATEGORY_REPOSITORY,
@@ -47,4 +47,3 @@ import { CqrsModule } from '@nestjs/cqrs'
   ],
 })
 export class DatabaseModule {}
-

@@ -6,7 +6,9 @@ import { ROLE_CATEGORY_REPOSITORY } from '~/domain/repositories/role-category.re
 import { RoleCategory } from '~/domain/entities/role-category.entity'
 
 @CommandHandler(CreateRoleCategoryCommand)
-export class CreateRoleCategoryHandler implements ICommandHandler<CreateRoleCategoryCommand, RoleCategory> {
+export class CreateRoleCategoryHandler
+  implements ICommandHandler<CreateRoleCategoryCommand, RoleCategory>
+{
   constructor(
     @Inject(ROLE_CATEGORY_REPOSITORY)
     private readonly roleCategoryRepository: IRoleCategoryRepository,

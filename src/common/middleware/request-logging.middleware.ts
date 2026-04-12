@@ -3,7 +3,6 @@ import { Request, Response, NextFunction } from 'express'
 import { v4 as uuidv4 } from 'uuid'
 import { requestContext } from '~/common/context/request-context'
 
-
 // Người đón request và khởi tạo context(dữ liệu) cho request
 // người bỏ kongRequestId vào hộp
 @Injectable()

@@ -1,5 +1,3 @@
 export class GetLeafCategoryIdsQuery {
-  constructor(
-    public readonly roleId: string,
-  ) {}
+  constructor(public readonly roleId: string) {}
 }

@@ -5,7 +5,9 @@ import { Inject, NotFoundException } from '@nestjs/common'
 import { CountCartItemsQuery } from '~/application/queries/count-cart-items/count-cart-items.query'
 
 @QueryHandler(CountCartItemsQuery)
-export class CountCartItemsHandler implements IQueryHandler<CountCartItemsQuery, { count: number }> {
+export class CountCartItemsHandler
+  implements IQueryHandler<CountCartItemsQuery, { count: number }>
+{
   constructor(
     @Inject(USER_REPOSITORY)
     private readonly userRepository: IUserRepository,

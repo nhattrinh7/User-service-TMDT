@@ -6,9 +6,7 @@ import { RefundWalletCommand } from '~/application/commands/refund-wallet/refund
 
 @Controller()
 export class RefundWalletConsumer extends BaseRetryConsumer {
-  constructor(
-    private readonly commandBus: CommandBus,
-  ) {
+  constructor(private readonly commandBus: CommandBus) {
     super()
   }
 

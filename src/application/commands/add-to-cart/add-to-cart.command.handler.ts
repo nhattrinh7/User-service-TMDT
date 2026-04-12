@@ -32,9 +32,7 @@ interface ShopInfo {
   createdAt: Date
 }
 
-type AddToCartResponse = 
-  | { productVariantId: string; quantity: number }
-  | CartGroupedByShop
+type AddToCartResponse = { productVariantId: string; quantity: number } | CartGroupedByShop
 
 @CommandHandler(AddToCartCommand)
 export class AddToCartHandler implements ICommandHandler<AddToCartCommand, AddToCartResponse> {
@@ -53,7 +51,10 @@ export class AddToCartHandler implements ICommandHandler<AddToCartCommand, AddTo
     if (!user) throw new NotFoundException(`User doesn't exist`)
 
     // Tìm CartItem theo userId và productVariantId
-    const existingCartItem = await this.userRepository.findCartItemByUserAndVariant(userId, productVariantId)
+    const existingCartItem = await this.userRepository.findCartItemByUserAndVariant(
+      userId,
+      productVariantId,
+    )
 
     // Nếu đã có item trong giỏ hàng → cập nhật quantity trong DB
     if (existingCartItem) {
@@ -63,7 +64,7 @@ export class AddToCartHandler implements ICommandHandler<AddToCartCommand, AddTo
 
       return {
         productVariantId,
-        quantity: newQuantity
+        quantity: newQuantity,
       }
     }
 
@@ -93,9 +94,9 @@ export class AddToCartHandler implements ICommandHandler<AddToCartCommand, AddTo
 
     // Create new CartItem
     const cartItem = CartItem.create({
-        userId,
-        variantInfo,
-        quantity,
+      userId,
+      variantInfo,
+      quantity,
     })
 
     await this.userRepository.createCartItem(cartItem)
@@ -107,7 +108,7 @@ export class AddToCartHandler implements ICommandHandler<AddToCartCommand, AddTo
       logo: shopInfo.logo,
       items: [
         {
-          id: cartItem.id, 
+          id: cartItem.id,
           productId: variantInfo.productId,
           productVariantId: variantInfo.id,
           name: variantInfo.name,
@@ -115,8 +116,8 @@ export class AddToCartHandler implements ICommandHandler<AddToCartCommand, AddTo
           quantity: quantity,
           image: variantInfo.image,
           sku: variantInfo.sku,
-        }
-      ]
+        },
+      ],
     }
 
     return result

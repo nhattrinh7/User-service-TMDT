@@ -1,10 +1,15 @@
 import { QueryHandler, IQueryHandler } from '@nestjs/cqrs'
 import { Inject, NotFoundException } from '@nestjs/common'
-import { type IUserRepository, USER_REPOSITORY } from '~/domain/repositories/user.repository.interface'
+import {
+  type IUserRepository,
+  USER_REPOSITORY,
+} from '~/domain/repositories/user.repository.interface'
 import { CheckPassCodeQuery } from '~/application/queries/check-pass-code/check-pass-code.query'
 
 @QueryHandler(CheckPassCodeQuery)
-export class CheckPassCodeHandler implements IQueryHandler<CheckPassCodeQuery, { hasPassCode: boolean }> {
+export class CheckPassCodeHandler
+  implements IQueryHandler<CheckPassCodeQuery, { hasPassCode: boolean }>
+{
   constructor(
     @Inject(USER_REPOSITORY)
     private readonly userRepository: IUserRepository,

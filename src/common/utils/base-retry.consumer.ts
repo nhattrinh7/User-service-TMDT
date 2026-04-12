@@ -23,7 +23,9 @@ export abstract class BaseRetryConsumer {
 
     return requestContext.run({ kongRequestId }, async () => {
       if (retryCount > this.maxRetries) {
-        this.logger.error(`[kongRequestId=${kongRequestId}] Max retries (${this.maxRetries}) exceeded, sending to DLQ`)
+        this.logger.error(
+          `[kongRequestId=${kongRequestId}] Max retries (${this.maxRetries}) exceeded, sending to DLQ`,
+        )
 
         const serviceName = process.env.SERVICE_NAME || 'unknown-service'
         channel.publish('events_exchange', `dlq.${serviceName}`, originalMsg.content, {
@@ -56,23 +58,20 @@ export abstract class BaseRetryConsumer {
         const originalRoutingKey =
           originalMsg.properties.headers?.['x-original-routing-key'] || context.getPattern()
 
-        this.logger.warn(`[kongRequestId=${kongRequestId}] Retry ${retryCount + 1}/${this.maxRetries} after ${jitterDelay}ms — routing: ${originalRoutingKey}`)
+        this.logger.warn(
+          `[kongRequestId=${kongRequestId}] Retry ${retryCount + 1}/${this.maxRetries} after ${jitterDelay}ms — routing: ${originalRoutingKey}`,
+        )
 
         setTimeout(() => {
-          channel.publish(
-            'events_exchange',
-            originalRoutingKey,
-            originalMsg.content,
-            {
-              persistent: true,
-              headers: {
-                ...originalMsg.properties.headers,
-                'x-retry-count': retryCount + 1,
-                'x-original-routing-key': originalRoutingKey,
-                'kong-request-id': kongRequestId,
-              },
+          channel.publish('events_exchange', originalRoutingKey, originalMsg.content, {
+            persistent: true,
+            headers: {
+              ...originalMsg.properties.headers,
+              'x-retry-count': retryCount + 1,
+              'x-original-routing-key': originalRoutingKey,
+              'kong-request-id': kongRequestId,
             },
-          )
+          })
         }, jitterDelay)
 
         channel.ack(originalMsg)

@@ -42,7 +42,8 @@ export class Address {
   }): void {
     // Dùng '!== undefined' vì nếu ko dùng sẽ bỏ qua '', 0, và một số giá trị khác
     if (props.recipientName !== undefined) this.recipientName = props.recipientName
-    if (props.recipientPhoneNumber !== undefined) this.recipientPhoneNumber = PhoneNumber.create(props.recipientPhoneNumber)
+    if (props.recipientPhoneNumber !== undefined)
+      this.recipientPhoneNumber = PhoneNumber.create(props.recipientPhoneNumber)
     if (props.province !== undefined) this.province = props.province
     if (props.ward !== undefined) this.ward = props.ward
     if (props.detail !== undefined) this.detail = props.detail

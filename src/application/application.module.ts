@@ -84,22 +84,11 @@ const QueryHandlers = [
   GetWalletBalanceHandler,
 ]
 
-const EventHandlers = [
+const EventHandlers = []
 
-]
- 
 @Module({
-  imports: [
-    CqrsModule,
-    DatabaseModule,
-    MessagingModule
-  ],
-  providers: [
-    ...CommandHandlers,
-    ...QueryHandlers,
-    ...EventHandlers,
-    CloudinaryService
-  ],
+  imports: [CqrsModule, DatabaseModule, MessagingModule],
+  providers: [...CommandHandlers, ...QueryHandlers, ...EventHandlers, CloudinaryService],
   exports: [],
 })
 export class ApplicationModule {}

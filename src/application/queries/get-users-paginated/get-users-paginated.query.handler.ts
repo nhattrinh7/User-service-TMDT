@@ -18,7 +18,7 @@ export class GetUsersPaginatedHandler implements IQueryHandler<GetUsersPaginated
     const result = await this.userRepository.getUsersPaginated(page, limit, search, status)
 
     return {
-      users: result.data.map((user) => UserMapper.toUserResponse(user)),
+      users: result.data.map(user => UserMapper.toUserResponse(user)),
       meta: result.meta,
     }
   }

@@ -18,13 +18,13 @@ export class AddressMapper {
       prismaAddress.updatedAt,
     )
   }
-  
+
   static toDomain(addresses: PrismaAddress[]): Address[] {
     return addresses
       .map(address => this.toSingleDomainAddress(address))
       .filter((address): address is Address => address !== null)
   }
-  
+
   static toPersistence(userAddress: Address) {
     return {
       id: userAddress.id,

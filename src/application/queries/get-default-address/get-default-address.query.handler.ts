@@ -9,7 +9,9 @@ import { AddressDto } from '~/presentation/dtos/address.dto'
 import { AddressMapper } from '~/application/mappers/address.mapper'
 
 @QueryHandler(GetDefaultAddressQuery)
-export class GetDefaultAddressHandler implements IQueryHandler<GetDefaultAddressQuery, AddressDto | null> {
+export class GetDefaultAddressHandler
+  implements IQueryHandler<GetDefaultAddressQuery, AddressDto | null>
+{
   constructor(
     @Inject(USER_REPOSITORY)
     private readonly userRepository: IUserRepository,

@@ -53,7 +53,15 @@ import { UpdateUserRoleConsumer } from '~/infrastructure/messaging/consumers/upd
       },
     ]),
   ],
-  controllers: [GetOwnerAndAddressConsumer, GetOwnerEmailConsumer, GetLeafCategoryIdsConsumer, GetUsersInfoConsumer, SagaUserConsumer, RefundWalletConsumer, UpdateUserRoleConsumer],
+  controllers: [
+    GetOwnerAndAddressConsumer,
+    GetOwnerEmailConsumer,
+    GetLeafCategoryIdsConsumer,
+    GetUsersInfoConsumer,
+    SagaUserConsumer,
+    RefundWalletConsumer,
+    UpdateUserRoleConsumer,
+  ],
   providers: [
     {
       provide: MESSAGE_PUBLISHER,
@@ -63,4 +71,3 @@ import { UpdateUserRoleConsumer } from '~/infrastructure/messaging/consumers/upd
   exports: [ClientsModule, MESSAGE_PUBLISHER],
 })
 export class MessagingModule {}
-

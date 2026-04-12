@@ -2,13 +2,14 @@ import { Controller } from '@nestjs/common'
 import { Payload, Ctx, RmqContext, MessagePattern } from '@nestjs/microservices'
 import { QueryBus } from '@nestjs/cqrs'
 import { BaseRetryConsumer } from '~/common/utils/base-retry.consumer'
-import { GetOwnerAndAddressQuery, type GetOwnerAndAddressPayload } from '~/application/queries/get-owner-and-address/get-owner-and-address.query'
+import {
+  GetOwnerAndAddressQuery,
+  type GetOwnerAndAddressPayload,
+} from '~/application/queries/get-owner-and-address/get-owner-and-address.query'
 
 @Controller()
 export class GetOwnerAndAddressConsumer extends BaseRetryConsumer {
-  constructor(
-    private readonly queryBus: QueryBus,
-  ) {
+  constructor(private readonly queryBus: QueryBus) {
     super()
   }
 

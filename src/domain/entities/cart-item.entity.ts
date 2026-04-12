@@ -5,7 +5,7 @@ export class CartItem {
     public readonly id: string,
     public readonly userId: string,
     public readonly productId: string,
-    public readonly productVariantId: string, 
+    public readonly productVariantId: string,
     public readonly shopId: string,
     public readonly productName: string,
     public readonly productImage: string | null,

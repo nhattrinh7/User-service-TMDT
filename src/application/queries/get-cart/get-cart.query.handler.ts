@@ -55,13 +55,16 @@ export class GetCartHandler implements IQueryHandler<GetCartQuery, CartGroupedBy
     }
 
     // Nhóm cart items theo shopId
-    const groupedByShop = cartItems.reduce((acc, item) => {
-      if (!acc[item.shopId]) {
-        acc[item.shopId] = []
-      }
-      acc[item.shopId].push(item)
-      return acc
-    }, {} as Record<string, any[]>)
+    const groupedByShop = cartItems.reduce(
+      (acc, item) => {
+        if (!acc[item.shopId]) {
+          acc[item.shopId] = []
+        }
+        acc[item.shopId].push(item)
+        return acc
+      },
+      {} as Record<string, any[]>,
+    )
 
     const shopIds = Object.keys(groupedByShop)
 
@@ -72,11 +75,11 @@ export class GetCartHandler implements IQueryHandler<GetCartQuery, CartGroupedBy
     >('get.shop.simple_data', { shopIds })
 
     // Map shop info với cart items
-    const result: CartGroupedByShop[] = shopsInfo.map((shop) => ({
+    const result: CartGroupedByShop[] = shopsInfo.map(shop => ({
       id: shop.id,
       name: shop.name,
       logo: shop.logo,
-      items: groupedByShop[shop.id].map((item) => ({
+      items: groupedByShop[shop.id].map(item => ({
         id: item.id,
         productId: item.productId,
         productVariantId: item.productVariantId,

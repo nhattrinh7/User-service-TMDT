@@ -6,17 +6,12 @@ import { GetUsersInfoQuery } from '~/application/queries/get-users-info/get-user
 
 @Controller()
 export class GetUsersInfoConsumer extends BaseRetryConsumer {
-  constructor(
-    private readonly queryBus: QueryBus,
-  ) {
+  constructor(private readonly queryBus: QueryBus) {
     super()
   }
 
   @MessagePattern('get.users_info')
-  async handleGetUsersInfo(
-    @Payload() data: { userIds: string[] },
-    @Ctx() context: RmqContext,
-  ) {
+  async handleGetUsersInfo(@Payload() data: { userIds: string[] }, @Ctx() context: RmqContext) {
     const result = await this.handleWithRetry(context, async () => {
       this.logger.log(`Event get.users_info received, count=${data.userIds.length}`)
       return await this.queryBus.execute(new GetUsersInfoQuery(data.userIds))

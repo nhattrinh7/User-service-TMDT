@@ -1,10 +1,4 @@
-import {
-  Controller,
-  Param,
-  Get,
-  Query,
-  Patch,
-} from '@nestjs/common'
+import { Controller, Param, Get, Query, Patch } from '@nestjs/common'
 import { CommandBus, QueryBus } from '@nestjs/cqrs'
 import { GetUsersPaginatedQuery } from '~/application/queries/get-users-paginated/get-users-paginated.query'
 import { GetUsersPaginatedQueryDto } from '~/presentation/dtos/user.dto'
@@ -19,33 +13,23 @@ export class AdminController {
   ) {}
 
   @Get('/')
-  async getUsersPaginated(
-    @Query() query: GetUsersPaginatedQueryDto,
-  ): Promise<any> {
-    const result = await this.queryBus.execute(new GetUsersPaginatedQuery(
-      query.page,
-      query.limit,
-      query.search,
-      query.status,
-    ))
-    
+  async getUsersPaginated(@Query() query: GetUsersPaginatedQueryDto): Promise<any> {
+    const result = await this.queryBus.execute(
+      new GetUsersPaginatedQuery(query.page, query.limit, query.search, query.status),
+    )
+
     return { message: 'Get users paginated successful', data: result }
   }
 
   @Patch('/:id/ban')
-  async banUser(
-    @Param('id') id: string
-  ): Promise<any> {
+  async banUser(@Param('id') id: string): Promise<any> {
     await this.commandBus.execute(new BanUserCommand(id))
     return { message: 'Ban user successful' }
   }
 
   @Patch('/:id/unban')
-  async unbanUser(
-    @Param('id') id: string
-  ): Promise<any> {
+  async unbanUser(@Param('id') id: string): Promise<any> {
     await this.commandBus.execute(new UnbanUserCommand(id))
     return { message: 'Unban user successful' }
   }
-
 }

@@ -10,17 +10,12 @@ interface GetOwnerEmailPayload {
 
 @Controller()
 export class GetOwnerEmailConsumer extends BaseRetryConsumer {
-  constructor(
-    private readonly queryBus: QueryBus,
-  ) {
+  constructor(private readonly queryBus: QueryBus) {
     super()
   }
 
   @MessagePattern('get.owner-email')
-  async handleGetOwnerEmail(
-    @Payload() data: GetOwnerEmailPayload,
-    @Ctx() context: RmqContext,
-  ) {
+  async handleGetOwnerEmail(@Payload() data: GetOwnerEmailPayload, @Ctx() context: RmqContext) {
     const result = await this.handleWithRetry(context, async () => {
       this.logger.log(`Event get.owner-email received, ownerId=${data.ownerId}`)
       return await this.queryBus.execute(new GetOwnerEmailQuery(data.ownerId))

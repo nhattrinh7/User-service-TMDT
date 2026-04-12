@@ -5,7 +5,9 @@ import { USER_REPOSITORY } from '~/domain/repositories/user.repository.interface
 import { DeleteCartItemsCommand } from './delete-cart-items.command'
 
 @CommandHandler(DeleteCartItemsCommand)
-export class DeleteCartItemsHandler implements ICommandHandler<DeleteCartItemsCommand, { deletedCount: number }> {
+export class DeleteCartItemsHandler
+  implements ICommandHandler<DeleteCartItemsCommand, { deletedCount: number }>
+{
   constructor(
     @Inject(USER_REPOSITORY)
     private readonly userRepository: IUserRepository,

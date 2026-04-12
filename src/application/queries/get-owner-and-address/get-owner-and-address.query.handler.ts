@@ -10,7 +10,9 @@ import { AddressMapper } from '~/application/mappers/address.mapper'
 import { OwnerAndAddressResult } from '~/domain/interfaces/response.interface'
 
 @QueryHandler(GetOwnerAndAddressQuery)
-export class GetOwnerAndAddressHandler implements IQueryHandler<GetOwnerAndAddressQuery, OwnerAndAddressResult[]> {
+export class GetOwnerAndAddressHandler
+  implements IQueryHandler<GetOwnerAndAddressQuery, OwnerAndAddressResult[]>
+{
   constructor(
     @Inject(USER_REPOSITORY)
     private readonly userRepository: IUserRepository,
@@ -33,7 +35,9 @@ export class GetOwnerAndAddressHandler implements IQueryHandler<GetOwnerAndAddre
 
     // Tạo lookup maps để tìm nhanh
     const userMap = new Map(users.map(user => [user.id, UserMapper.toUserResponse(user)]))
-    const addressMap = new Map(addresses.map(address => [address.id, AddressMapper.toAddressResponse(address)]))
+    const addressMap = new Map(
+      addresses.map(address => [address.id, AddressMapper.toAddressResponse(address)]),
+    )
 
     // Map kết quả theo shopId
     return data.map(item => ({

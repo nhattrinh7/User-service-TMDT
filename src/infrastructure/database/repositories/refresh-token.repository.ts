@@ -1,6 +1,9 @@
 import { Injectable } from '@nestjs/common'
 import { PrismaService } from '~/infrastructure/database/prisma/prisma.service'
-import { IRefreshTokenRepository, SaveRefreshToken } from '~/domain/repositories/refresh-token.repository.interface'
+import {
+  IRefreshTokenRepository,
+  SaveRefreshToken,
+} from '~/domain/repositories/refresh-token.repository.interface'
 import { v4 as uuidv4 } from 'uuid'
 
 @Injectable()
@@ -25,21 +28,21 @@ export class RefreshTokenRepository implements IRefreshTokenRepository {
     return await this.prisma.refreshToken.findFirst({
       where: {
         userId: userId,
-        userAgent: userAgent
-      }
+        userAgent: userAgent,
+      },
     })
   }
 
   async updateRefreshToken(id: string, newHashedRefreshToken: string): Promise<void> {
     await this.prisma.refreshToken.update({
       where: { id: id },
-      data: { token: newHashedRefreshToken }
+      data: { token: newHashedRefreshToken },
     })
   }
 
   async deleteRefreshToken(id: string): Promise<void> {
     await this.prisma.refreshToken.delete({
-      where: { id: id }
+      where: { id: id },
     })
   }
 }

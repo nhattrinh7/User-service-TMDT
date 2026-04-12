@@ -19,7 +19,9 @@ interface GetAddressResult {
 }
 
 @CommandHandler(SagaGetAddressCommand)
-export class SagaGetAddressHandler implements ICommandHandler<SagaGetAddressCommand, GetAddressResult> {
+export class SagaGetAddressHandler
+  implements ICommandHandler<SagaGetAddressCommand, GetAddressResult>
+{
   constructor(
     @Inject(ADDRESS_REPOSITORY)
     private readonly addressRepository: IAddressRepository,
